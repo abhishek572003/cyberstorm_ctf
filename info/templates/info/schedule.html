@@ -1,0 +1,526 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberstorm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Pirata One', cursive;
+            text-align: center;
+            background-image: url("{% static 'images/schedulebg.png' %}");
+            background-repeat: repeat;
+            background-size: cover;
+            background-position: center;
+            overflow-x: hidden;
+            max-height: 100vh;
+        }
+        .bg{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            height: 100vh;
+            align-items: flex-end;
+        }
+        .container , .three-row{
+            display: flex;
+          
+        }
+
+        .column {
+            flex: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+     
+
+        #ship{
+            top: 9%;  /* Ensures ship is at the bottom of .bg */
+             width: 90%;
+            position: absolute;
+        }
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Pirata One', cursive;
+            text-align: center;
+            overflow-x: hidden;
+        }
+        .navbar {
+    display: flex;
+    justify-content: space-between; /* Ensures content is distributed properly */
+    align-items: center;
+    background: transparent;
+    padding: 25px 5%; /* Adjusted padding */
+    color: black;
+    width: 100%;
+    flex-grow: 1;
+    position: relative;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px; /* Adjust spacing */
+    margin-right: 0; /* Remove unnecessary right margin */
+    padding: 0;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: black;
+    font-size: 30px;
+}
+
+.nav-links a:hover {
+    color: #FFD700;
+}
+
+.register-btn {
+    background: #1E1E1E;
+    color: #FFD700;
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 30px;
+    margin-left: auto; /* Ensures the button aligns properly */
+}
+
+.burger-menu {
+    font-size: 24px;
+    display: none;
+    cursor: pointer;
+}
+
+/* Responsive Design Fix */
+@media (max-width: 800px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        background: #222;
+        color: white;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        padding: 10px 0;
+        text-align: center;
+    }
+
+    .nav-links.show {
+        display: flex;
+        color: white;
+    }
+
+    .burger-menu {
+        display: block;
+    }
+
+    .register-btn {
+        font-size: 22px;
+        margin-right: 5%;
+    }
+}
+
+        @media (max-width: 800px) {
+            .burger-menu {
+                display: block;
+                color: white;
+            }
+            .nav-links a{
+                color: white;
+            }
+        }
+#logo{
+    margin: 0;
+    padding: 0;
+    margin-top: 10%;
+    width: 80%;
+}
+.logo{
+    margin-right: 15%;
+}
+
+h1{
+    font-size: 70px;
+    color: white;
+    padding-top: 20px;
+    background-color: transparent;
+}
+.three-column {
+    display: flex;
+    width: 33.33%;
+  padding: 30px;
+  flex-direction: column;
+            justify-content: center;
+            align-items: center;
+}
+.domain-image{
+    max-width: 80%;
+}
+
+.logo-top{
+            width: 250px;
+            margin-right: 20%;
+        }
+
+
+@media (max-width: 768px) {
+            .container {
+                width: 100%;
+            }
+            .column, .three-column{
+                flex: 100%;
+            }
+            .right{
+                display: none;
+            }
+            .domain-image {
+                width: 80%;
+                margin: 0 auto;
+            }
+
+            .social-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .social-links a {
+                font-size: 14px;
+            }
+
+            footer p {
+                font-size: 12px;
+            }
+            .become-sponsor{
+                min-height: 100%;
+            }
+            .card{
+                margin-left: 300%;
+            }
+        }
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1E1E1E;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loader {
+            border: 5px solid #FFD700;
+            border-top: 5px solid transparent;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(-50%, 0); }
+            50% { transform: translate(-50%, -10px); }
+        }
+
+footer {
+            background: #1E1E1E;
+            padding: 40px 20px;
+            text-align: left;
+            border-top: 2px solid #FFD700;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            margin: 20px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.5rem;
+            color: #FFD700;
+            margin-bottom: 15px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin: 10px 0;
+        }
+
+        .footer-section ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #FFD700;
+        }
+
+        .footer-section p {
+            font-size: 1.1rem;
+            color: white;
+            margin: 10px 0;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+
+        .footer-bottom p {
+            font-size: 1rem;
+            color: #888;
+        }
+
+        .footer-bottom a {
+            color: #FFD700;
+            text-decoration: none;
+        }
+
+        .footer-bottom a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .footer-section {
+                margin: 10px 0;
+            }
+        }
+       
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
+}
+@media screen and (max-width: 800px) {
+    .row{
+        flex-direction: column;
+    }
+  .column {
+    width: 100%;
+  }
+}
+.card {
+  position: relative;
+  width: max-content;
+  height: auto;
+  color: white;
+  background: #FFC300;
+  background: linear-gradient(137deg, #FFC300 0%, #E63946 100%);
+  transition: 0.3s ease;
+  border-radius: 30px;
+  filter: drop-shadow(0px 0px 30px rgba(200, 107, 15, 0.252));
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  z-index: -1;
+}
+
+.card::after {
+  content: '';
+  background-color: #1e1e1e;
+  color: white;
+  position: absolute;
+  z-index: -1;
+  transition: 0.3s ease;
+  height: 98%;
+  width: 98%;
+  top: 1%;
+  left: 1%;
+  border-radius: 28px;
+}
+
+.card:hover {
+  filter: drop-shadow(0px 0px 30px #E63946);
+}
+.card_image {
+    width: 260px;
+    height: 260px;
+    rotate: -90deg;
+    padding: 3%;
+    justify-self: center;
+}
+
+    </style>
+</head>
+<body>
+    {% block content %}
+    
+    <section>
+                <nav class="navbar">
+            <div class="logo">
+                <a href="{% url 'home' %}"> <img class="logo-top" src="{% static 'images/logo copy.png' %}"></a>
+            </div>
+        
+            <ul class="nav-links">
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'schedule' %}">Schedule</a></li>
+                <li><a href="{% url 'sponsors' %}">Sponsors</a></li>
+                <li><a href="{% url 'rules' %}">Rules</a></li>
+            
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    <li style="margin-right: 480px;"><a href="" class="register-btn">Profile</a></li>
+                {% else %}
+                
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                
+            </ul>
+
+            <a href="{% url 'register' %}" class="register-btn">Register</a>
+            {% endif %}
+            
+            
+            <div class="burger-menu" onclick="toggleMenu()">☰</div>
+        </nav>
+    </section>
+
+    <section class="sponsors">
+        <h1 style="color:#1E1E1E"> Schedule</h1><br><br>
+        <div class="row">
+            <div class="three-column">
+                <div class="card">
+                    <center><img src="{% static 'images/coin.png' %}" alt="" class="card_image">
+                    <h3>Stage 1</h3>
+                    <h2>Registration</h2></center>
+                    <br><br><br>
+                </div> 
+                
+            </div>
+            <div class="three-column">
+                <div class="card">
+                    <center><img src="{% static 'images/coin.png' %}" alt="" class="card_image">
+                    <h3>Stage 2</h3>
+                    <h2>Online CTF</h2></center>
+                    <br><br><br>
+                </div>  
+                
+            </div>
+            
+            <div class="three-column">
+                <div class="card">
+                    <center><img src="{% static 'images/coin.png' %}" alt="" class="card_image">
+                    <h3>Stage 3</h3>
+                    <h2>Offline CTF</h2></center>
+                    <br><br><br>
+                </div>  
+                
+            </div>
+
+        </div>
+        <br><br><br><br><br><br>
+    </section>
+    <footer>
+        <div class="footer-content">
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h3>Presented By</h3>
+                <p><img src="{% static 'images/gdg.png' %}" alt="GDG SIES GST" style="width: 250px;"><p>
+                <h3>Community Partner</h3>
+                <p><img src="{% static 'images/mim.png' %}" alt="Make in Mumbai" style="width: 150px;"><p>
+            </div>
+
+            <!-- Contact Us -->
+            <div class="footer-section">
+                <h3>Contact Us<h3>
+                <p>Email: </p>
+                <p>gdgsiesgst@gmail.com</p>
+                <p>gdgoncampus@sies.edu.in</p>
+            </div>
+
+            <!-- Follow Us -->
+            <div class="footer-section">
+                <h3>FOLLOW US</h3>
+                <ul>
+                    <li><a href="https://www.instagram.com/gdgoncampus.siesgst_/">Instagram</a></li>
+                    <li><a href="https://www.linkedin.com/company/google-developer-groups-siesgst/">Linkedin</a></li>
+                    <li><a href="https://linktr.ee/gdgsiesgst">Linktree</a></li>
+                    <li><a href="https://chat.whatsapp.com/CWmRIxITylRKbBkDzjrhfD">Whatsapp Group</a></li>
+                </ul>
+            </div>
+
+            <!-- Collaboration -->
+            <div class="footer-section">
+                <h3>In Collabration</h3>
+                <p><img src="{% static 'images/redfox.png' %}" alt="RedFox Security" style="width: 150px;"><p>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <p>© 2025 Cyberstorm. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    {% endblock %}
+
+    
+    <script>
+    function toggleMenu() {
+    const navLinks = document.querySelector(".nav-links");
+    navLinks.classList.toggle("show");
+    }
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>
