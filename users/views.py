@@ -6,29 +6,42 @@ from .models import Team
 def register(request):
     if request.method == "POST":
         team_name = request.POST["team_name"]
-        team_leader = request.POST["team_leader"]
-        team_leader_email = request.POST["team_leader_email"]
-        members_count = int(request.POST["members_count"])
+        is_professional = request.POST.get("is_professional") == "on"
         password = request.POST["password"]
+        confirm_password = request.POST["confirm_password"]
 
-        # Get member details
-        member_names = [request.POST[f"member_name_{i}"] for i in range(1, members_count)]
-        member_emails = [request.POST[f"member_email_{i}"] for i in range(1, members_count)]
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return render(request, "users/register.html")
 
-        # Check if team name exists
+        # Get the first member's details (individual or team leader)
+        member_names = [request.POST["member_name_0"]]
+        member_emails = [request.POST["member_email_0"]]
+        member_phones = [request.POST["member_phone_0"]]
+
+        # If team registration, get other members' details
+        members_count = int(request.POST.get("members_count", 1))
+        if members_count > 1:
+            for i in range(1, members_count):
+                member_names.append(request.POST[f"member_name_{i}"])
+                member_emails.append(request.POST[f"member_email_{i}"])
+                member_phones.append(request.POST[f"member_phone_{i}"])
+
         if Team.objects.filter(team_name=team_name).exists():
             messages.error(request, "Team name already exists.")
         else:
             team = Team.objects.create_user(
                 team_name=team_name,
-                team_leader=team_leader,
-                team_leader_email=team_leader_email,
+                team_leader=member_names[0],
+                team_leader_email=member_emails[0],
                 password=password,
             )
-            team.member_names = ",".join(member_names)
-            team.member_emails = ",".join(member_emails)
+            team.is_professional = is_professional
+            team.member_names = ",".join(member_names[1:])
+            team.member_emails = ",".join(member_emails[1:])
+            team.member_phones = ",".join(member_phones)
             team.save()
-            messages.success(request, "Team registered successfully! Please log in.")
+            messages.success(request, "Registration successful! Please log in.")
             return redirect("login")
 
     return render(request, "users/register.html")
