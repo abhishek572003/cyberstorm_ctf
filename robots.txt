@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Sitemap: https://cyberstorm.gdgsiesgst.site/sitemap.xml
+
+# Optimize crawling
+Crawl-delay: 10 
