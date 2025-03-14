@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 import dj_database_url
 
-ALLOWED_HOSTS = ["cyberstorm.onrender.com"]
+ALLOWED_HOSTS = ['cyberstorm.gdgsiesgst.site', '13.60.37.154']
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -25,9 +25,9 @@ ALLOWED_HOSTS = ["cyberstorm.onrender.com"]
 SECRET_KEY = 'django-insecure--w!_tfqpzgvm!ccha+_jm!=5mkllgb(d#06_y=jt3y(^6(tu!='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cyberstorm.gdgsiesgst.site', '13.60.37.154']
 
 import os
 AUTH_USER_MODEL = "users.Team"  # Use custom user model
@@ -49,6 +49,7 @@ DATABASES = {
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -141,3 +142,22 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/home/ubuntu/cyberstorm_ctf/django.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

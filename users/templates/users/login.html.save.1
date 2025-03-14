@@ -48,6 +48,7 @@
     justify-content: space-between;
     align-items: center;
     background: transparent;
+    padding: 25px 20px;
     color: white;
 }
 p, label{
@@ -62,12 +63,8 @@ p, label{
     list-style: none;
     display: flex;
     justify-content: space-between;
-    justify-content: center;
-	justify-items: center;
-align-content: center;
-align-items: center;
-    gap: 30px;
-margin-right: 30px;
+    margin-right: 10%;
+    gap: 17%;
 }
 
 .nav-links li {
@@ -96,6 +93,7 @@ margin-right: 30px;
 
 
 .burger-menu {
+    font-size: 24px;
     display: none;
 }
 .logo-top{
@@ -129,7 +127,7 @@ margin-right: 10%;
 }
     .burger-menu {
         display: block;
-font-size: 24px;
+	font-size: 24px;
     }
 }
 /* Footer */
@@ -231,6 +229,8 @@ footer {
             <li><a href="{% url 'schedule' %}">Schedule</a></li>
             <li><a href="{% url 'sponsors' %}">Sponsors</a></li>
             <li><a href="{% url 'rules' %}">Rules</a></li>
+        </ul>
+        <ul class="nav-links">
             {% if user.is_authenticated %}
                 <li><a href="{% url 'logout' %}">Logout</a></li>
                 <li><a href="{% url 'profile' %}">Profile</a></li>
@@ -238,10 +238,10 @@ footer {
                               
  <li><a href="{% url 'login' %}">Login</a></li>       
 </ul>
- <a href="{% url 'register' %}" class="register-btn">Register</a>
+ <li><a href="{% url 'register' %}" class="register-btn">Register</a></li
  {% endif %}
 
-        <div class="burger-menu" onclick="toggleMenu()"> ☰ </div>
+        <div class="burger-menu" onclick="toggleMenu()">☰</div>
     </nav>
     <h1>Login</h1>
 

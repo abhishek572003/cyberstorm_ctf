@@ -89,6 +89,7 @@
     text-decoration: none;
     color: white;
     font-size: 30px;
+	margin-right: 10%;
 }
 .nav-links a:hover {
     color: #FFD700;
@@ -142,6 +143,12 @@
     .burger-menu {
         display: block;
     }
+.logo-top{
+	width: 170px;
+}
+.register-button{
+	font-size: 18px;
+}
 }
         .card {
     width: 400px;
@@ -354,7 +361,7 @@ footer {
   
       {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}">Logout</a></li>
-                    <li style="margin-right: 480px;"><a href="" class="register-btn">Profile</a></li>
+                    </ul><a href="" class="register-btn">Profile</a>
                 {% else %}
                 
                     <li><a href="{% url 'login' %}">Login</a></li>
@@ -447,7 +454,7 @@ footer {
                   <h3>Presented By</h3>
                   <p><img src="{% static 'images/gdg.png' %}" alt="GDG SIES GST" style="width: 250px;"><p>
                   <h3>Community Partner</h3>
-                  <p><img src="{% static 'images/Mim.png' %}" alt="Make in Mumbai" style="width: 150px;"><p>
+                  <p><img src="{% static 'images/mim.png' %}" alt="Make in Mumbai" style="width: 150px;"><p>
               </div>
   
               <!-- Contact Us -->
@@ -462,10 +469,12 @@ footer {
               <div class="footer-section">
                   <h3>Follow Us</h3>
                   <ul>
+			<li><a href="https://linktr.ee/gdgsiesgst">Linktree</a></li>
                       <li><a href="https://www.instagram.com/gdgoncampus.siesgst_/">Instagram</a></li>
                       <li><a href="https://www.linkedin.com/company/google-developer-groups-siesgst/">Linkedin</a></li>
-                      <li><a href="https://linktr.ee/gdgsiesgst">Linktree</a></li>
+                      
                       <li><a href="https://chat.whatsapp.com/CWmRIxITylRKbBkDzjrhfD">Whatsapp Group</a></li>
+			<li><a href = "https://x.com/gdgsiesgst/">X / Twitter</a></li>
                   </ul>
               </div>
   

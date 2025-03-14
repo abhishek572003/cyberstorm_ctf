@@ -138,9 +138,13 @@
     }
 
     .register-btn {
-        font-size: 22px;
-        margin-right: 5%;
+        font-size: 18px;
+        margin: 0;
     }
+    .logo-top{
+	max-width: 160px;
+margin-right: 10%;
+}
 }
 
         @media (max-width: 800px) {
@@ -544,9 +548,13 @@ img {
   }
 }
 .card-text{
-    font-size: 18px;
+    font-size: 30px;
     color: white;
     text-align: center;
+}
+.card-text a{
+	color: white;
+text-decoration: none;
 }
 
     </style>
@@ -568,7 +576,7 @@ img {
             
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}">Logout</a></li>
-                    <li style="margin-right: 480px;"><a href="" class="register-btn">Profile</a></li>
+                    </ul><a href="" class="register-btn">Profile</a></li>
                 {% else %}
                 
                     <li><a href="{% url 'login' %}">Login</a></li>
@@ -585,9 +593,10 @@ img {
 
     <section class="sponsors">
         <a href="mailto:gdgsiesgst@gmail.com?cc=nandinisingh.here@gmail.com"><img src="{% static 'images/sponsorchest.png' %}" class="become-sponsor"></a>
-        <h1> Our Sponsors</h1><br><br>
+        <br><br>
         <div class="row">
             <div class="column">
+<h1> Our Sponsors </h1>
                 <div class="card">
                     <div class="content">
                       <div class="back">
@@ -623,7 +632,8 @@ img {
                             <div class="title">
                               <p class="title">
                                 <p class="card-text">
-                                   This is info about redfox. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo commodi soluta fugiat, distinctio optio saepe omnis magni nisi consequatur voluptate incidunt aliquam voluptas perferendis eveniet assumenda eaque qui aspernatur quidem!
+<p>Link to Redfox Security's pages</p><br>
+                                  <a href="https://linktr.ee/redfoxsec"> https://linktr.ee/redfoxsec</a>
                                 </p>
                                               </p>
                               <svg fill-rule="nonzero" height="15px" width="15px" viewBox="0,0,256,256" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode: normal" text-anchor="none" font-size="none" font-weight="none" font-family="none" stroke-dashoffset="0" stroke-dasharray="" stroke-miterlimit="10" stroke-linejoin="miter" stroke-linecap="butt" stroke-width="1" stroke="none" fill-rule="nonzero" fill="#20c997"><g transform="scale(8,8)"><path d="M25,27l-9,-6.75l-9,6.75v-23h18z"></path></g></g></svg>
@@ -635,6 +645,7 @@ img {
                   </div>                
             </div><br><br><br><br><br><br>
             <div class="column">
+<h1>Our Community Partner</h1>
                 <div class="card">
                     <div class="content">
                       <div class="back">
@@ -669,8 +680,9 @@ img {
                           <div class="description">
                             <div class="title">
                               <p class="title">
-                                <p>
-                
+                                <p class="card-text">
+<p>Link to Made in Mumbai's pages</p><br>
+                <a href="https://linktr.ee/madeinmumbai"> https://linktr.ee/madeinmumbai</a>
                                 </p>
                                               </p>
                               <svg fill-rule="nonzero" height="15px" width="15px" viewBox="0,0,256,256" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode: normal" text-anchor="none" font-size="none" font-weight="none" font-family="none" stroke-dashoffset="0" stroke-dasharray="" stroke-miterlimit="10" stroke-linejoin="miter" stroke-linecap="butt" stroke-width="1" stroke="none" fill-rule="nonzero" fill="#20c997"><g transform="scale(8,8)"><path d="M25,27l-9,-6.75l-9,6.75v-23h18z"></path></g></g></svg>
@@ -707,10 +719,12 @@ img {
             <div class="footer-section">
                 <h3>FOLLOW US</h3>
                 <ul>
+<li><a href="https://linktr.ee/gdgsiesgst">Linktree</a></li>
                     <li><a href="https://www.instagram.com/gdgoncampus.siesgst_/">Instagram</a></li>
                     <li><a href="https://www.linkedin.com/company/google-developer-groups-siesgst/">Linkedin</a></li>
-                    <li><a href="https://linktr.ee/gdgsiesgst">Linktree</a></li>
+                    
                     <li><a href="https://chat.whatsapp.com/CWmRIxITylRKbBkDzjrhfD">Whatsapp Group</a></li>
+<li><a href="https://x.com/gdgsiesgst/">X / Twitter</a></li>
                 </ul>
             </div>
 

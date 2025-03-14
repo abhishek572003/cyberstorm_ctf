@@ -2,8 +2,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team Registration</title>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
     <style>
@@ -48,6 +46,7 @@
     justify-content: space-between;
     align-items: center;
     background: transparent;
+    padding: 25px 20px;
     color: white;
 }
 p, label{
@@ -62,12 +61,8 @@ p, label{
     list-style: none;
     display: flex;
     justify-content: space-between;
-    justify-content: center;
-	justify-items: center;
-align-content: center;
-align-items: center;
-    gap: 30px;
-margin-right: 30px;
+    margin-right: 10%;
+    gap: 17%;
 }
 
 .nav-links li {
@@ -90,13 +85,15 @@ margin-right: 30px;
     padding: 8px 15px;
     text-decoration: none;
     border-radius: 5px;
-    font-size: 24px;
+    font-size: 30px;
     margin-right: 3%;
 }
 
 
 .burger-menu {
+    font-size: 24px;
     display: none;
+    cursor: pointer;
 }
 .logo-top{
             width: 250px;
@@ -119,17 +116,9 @@ margin-right: 30px;
     .nav-links.show {
         display: flex;
     }
-	.register-button{
-	font-size: 18px;
-margin: 0;
-}
-	.logo-top{
-	max-width: 160px;
-margin-right: 10%;
-}
+
     .burger-menu {
         display: block;
-font-size: 24px;
     }
 }
 /* Footer */
@@ -231,17 +220,18 @@ footer {
             <li><a href="{% url 'schedule' %}">Schedule</a></li>
             <li><a href="{% url 'sponsors' %}">Sponsors</a></li>
             <li><a href="{% url 'rules' %}">Rules</a></li>
+        </ul>
+        <ul class="nav-links">
             {% if user.is_authenticated %}
                 <li><a href="{% url 'logout' %}">Logout</a></li>
                 <li><a href="{% url 'profile' %}">Profile</a></li>
             {% else %}
-                              
- <li><a href="{% url 'login' %}">Login</a></li>       
-</ul>
- <a href="{% url 'register' %}" class="register-btn">Register</a>
- {% endif %}
+                <li><a href="{% url 'register' %}" class="register-btn">Register</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+            {% endif %}
+        </ul>
 
-        <div class="burger-menu" onclick="toggleMenu()"> ☰ </div>
+        <div class="burger-menu" onclick="toggleMenu()">☰</div>
     </nav>
     <h1>Login</h1>
 
@@ -281,13 +271,11 @@ footer {
         <div class="footer-section">
             <h3>Follow Us</h3>
             <ul>
-<li><a href="https://linktr.ee/gdgsiesgst">Linktree</a></li>
                 <li><a href="https://www.instagram.com/gdgoncampus.siesgst_/">Instagram</a></li>
                 <li><a href="https://www.linkedin.com/company/google-developer-groups-siesgst/">Linkedin</a></li>
-                
+                <li><a href="https://linktr.ee/gdgsiesgst">Linktree</a></li>
                 <li><a href="https://chat.whatsapp.com/CWmRIxITylRKbBkDzjrhfD">Whatsapp Group</a></li>
-<li><a href="https://x.com/gdgsiesgst">X / Twitter</a></li>           
- </ul>
+            </ul>
         </div>
 
         <!-- Collaboration -->
@@ -305,10 +293,11 @@ footer {
 
 <script>
     function toggleMenu() {
-   const navLinks = document.querySelector(".nav-links");
-	navLinks.classList.toggle("show");
+    const navLinks = document.querySelector(".nav-links");
+    navLinks.classList.toggle("show");
     }
 
   </script>
 </body>
 </html>
+

@@ -41,7 +41,7 @@ def login_view(request):
         team = authenticate(request, username=team_name, password=password)
         if team:
             login(request, team)
-            messages.success(request, f"Welcome, {team.team_leader}!")
+            messages.success(request, "Login Successful")
             return redirect("home")
         else:
             messages.error(request, "Invalid credentials")

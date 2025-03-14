@@ -27,12 +27,15 @@
         }
         /* Navbar */
         .navbar {
+
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: transparent;
     padding: 25px 20px;
     color: white;
+flex-wrap: wrap;
+overflow-x: hidden;
 }
 
 .logo {
@@ -79,7 +82,7 @@
 }
 .logo-top{
             width: 250px;
-            margin-right: 20%;
+            margin-right: 15%;
         }
         .register-btn:hover{
             color:#FFD700;
@@ -111,7 +114,12 @@
     }
     .logo-top{
         margin-right: 10%;
+max-width: 160px;
     }
+.register-button{
+font-size: 18px;
+margin: 0;
+}
 }
         h1{
             font-size: 3rem;
@@ -301,10 +309,7 @@ body::before {
         </style>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
 <body>
-    <div class="preloader">
-        <div class="loader"></div>
-    </div>
-
+    
     <nav class="navbar">
         <div class="logo">
             <a href="{% url 'home' %}"><img class="logo-top" src="{% static 'images/logo copy.png' %}"></a>
@@ -317,7 +322,7 @@ body::before {
             <li><a href="{% url 'rules' %}">Rules</a></li>        
             {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}">Logout</a></li>
-                    <li><a style="margin-right: 480px;" href="">Profile</a></li>
+                   </ul> <a href="" class="register-btn">Profile</a></li>
                 {% else %}
                 
                     <li><a href="{% url 'login' %}">Login</a></li>
@@ -369,7 +374,7 @@ body::before {
                     <h3>Presented By</h3>
                     <p><img src="{% static 'images/gdg.png' %}" alt="GDG SIES GST" style="width: 250px;"><p>
                     <h3>Community Partner</h3>
-                    <p><img src="{% static 'images/Mim.png' %}" alt="Make in Mumbai" style="width: 150px;"><p>
+                    <p><img src="{% static 'images/mim.png' %}" alt="Make in Mumbai" style="width: 150px;"><p>
                 </div>
     
                 <!-- Contact Us -->
@@ -384,11 +389,14 @@ body::before {
                 <div class="footer-section">
                     <h3>Follow Us</h3>
                     <ul>
+			<li><a href="https://linktr.ee/gdgsiesgst">Linktree</a></li>
+			
                         <li><a href="https://www.instagram.com/gdgoncampus.siesgst_/">Instagram</a></li>
                         <li><a href="https://www.linkedin.com/company/google-developer-groups-siesgst/">Linkedin</a></li>
-                        <li><a href="https://linktr.ee/gdgsiesgst">Linktree</a></li>
+                        
                         <li><a href="https://chat.whatsapp.com/CWmRIxITylRKbBkDzjrhfD">Whatsapp Group</a></li>
-                    </ul>
+     			<li><a href="https://x.com/gdgsiesgst/">X / Twitter</a></li>              
+ </ul>
                 </div>
     
                 <!-- Collaboration -->

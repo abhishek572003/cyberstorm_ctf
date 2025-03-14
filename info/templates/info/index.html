@@ -3,6 +3,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="keywords" content="Cyberstorm CTF, Capture the Flag, GDGSIESGST, gdg, GDG, siesgst, gdg siesgst, ethical hacking, cybersecurity tournament, hacking competition, cybersecurity event, bug bounty, one piece CTF">
+<meta name="author" content="GDG on Campus SIESGST Web Lead">
+<meta property="og:title" content="Cyberstorm CTF - the Ultimate One Piece Themed Capture the Flag">
+<meta property="og:description" content="Join Mumbai's Largest Capture the Flag adventure! A One Piece inspired cybersecurity competition where you can test your skills and claim the ultimate treasure">
+<meta property="og:url" content="https://cyberstorm.gdgsiesgst.site/">
+<meta name = "robots" content = "index, follow">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyberstorm</title>
@@ -58,12 +64,6 @@
              width: 90%;
             position: absolute;
         }
-
-        *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
         body {
             font-family: 'Pirata One', cursive;
             text-align: center;
@@ -79,6 +79,7 @@
     width: 100%;
     flex-grow: 1;
     position: relative;
+    text-wrap: wrap;
 }
 
 .nav-links {
@@ -144,28 +145,20 @@
     }
 
     .register-btn {
-        font-size: 24px;
+        font-size: 18px;
+margin: 0;
     }
+    .logo-top{
+       max-width: 160px;
+margin-right: 10%;
+}
 }
 
         @media (max-width: 800px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                background: #222;
-                position: absolute;
-                top: 60px;
-                left: 0;
-                width: 100%;
-                padding: 10px 0;
-                text-align: center;
-            }
-            .nav-links.show {
-                display: flex;
-            }
             .burger-menu {
                 display: block;
-            }
+		font-size: 24px;            
+}
         }
 #ship{
     margin-right: 10%;
@@ -209,7 +202,6 @@ h1{
 
 .logo-top{
             width: 250px;
-            margin-right: 20%;
         }
 
 
@@ -247,31 +239,7 @@ h1{
                 font-size: 12px;
             }
         }
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #1E1E1E;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
 
-        .loader {
-            border: 5px solid #FFD700;
-            border-top: 5px solid transparent;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translate(-50%, 0); }
-            50% { transform: translate(-50%, -10px); }
-        }
         .bg-video {
     position: absolute;
     top: 0;
@@ -396,7 +364,7 @@ footer {
             
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}">Logout</a></li>
-                    <li style="margin-right: 480px;"><a href="" class="register-btn">Profile</a></li>
+                  </ul> <a href="" class="register-btn">Profile</a></li>
                 {% else %}
                 
                     <li><a href="{% url 'login' %}">Login</a></li>
@@ -465,11 +433,13 @@ footer {
             <div class="footer-section">
                 <h3>FOLLOW US</h3>
                 <ul>
+<li><a href="https://linktr.ee/gdgsiesgst">Linktree</a></li>
                     <li><a href="https://www.instagram.com/gdgoncampus.siesgst_/">Instagram</a></li>
                     <li><a href="https://www.linkedin.com/company/google-developer-groups-siesgst/">Linkedin</a></li>
-                    <li><a href="https://linktr.ee/gdgsiesgst">Linktree</a></li>
+                    
                     <li><a href="https://chat.whatsapp.com/CWmRIxITylRKbBkDzjrhfD">Whatsapp Group</a></li>
-                </ul>
+                    <li><a href="https://x.com/gdgsiesgst">X / Twitter</a><li>
+ </ul>
             </div>
 
             <!-- Collaboration -->

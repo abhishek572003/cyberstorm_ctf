@@ -181,7 +181,6 @@ h1{
   flex-direction: column;
             justify-content: center;
             align-items: center;
-align-content: center;
 }
 .domain-image{
     max-width: 80%;
@@ -358,9 +357,10 @@ footer {
 .card {
   position: relative;
   width: max-content;
-max-width: 70%;
   height: auto;
   color: white;
+align-self: center;
+
   background: #FFC300;
   background: linear-gradient(137deg, #FFC300 0%, #E63946 100%);
   transition: 0.3s ease;
@@ -370,8 +370,6 @@ max-width: 70%;
   align-items: center;
   align-content: center;
   z-index: -1;
-align-self: center;
-justify-self: center;
 }
 
 .card::after {
@@ -398,17 +396,7 @@ justify-self: center;
     padding: 3%;
     justify-self: center;
 }
-.info-box{
-	position: absolute;
-	background: #1E1E1E;
-	color: white;
-	padding: 10px;
-border-radius: 5px;
-font-size: 22px;
-display: none;
-white-space: 0nowrap;
-z-index: 100;
-}
+
     </style>
 </head>
 <body>
@@ -428,7 +416,7 @@ z-index: 100;
             
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}">Logout</a></li>
-</ul><a href="" class="register-btn">Profile</a></li>
+                    <li style="margin-right: 480px;"><a href="" class="register-btn">Profile</a></li>
                 {% else %}
                 
                     <li><a href="{% url 'login' %}">Login</a></li>
@@ -450,12 +438,7 @@ z-index: 100;
                 <div class="card">
                     <center><img src="{% static 'images/coin.png' %}" alt="" class="card_image">
                     <h3>Stage 1</h3>
-                    <h2>Registration and Webinars</h2>
-<p>Registrations open till March 28, 2025</p>
-<p>Webinar 1: Breaking into Application Security</p>
-<p>Date: March 15, 2025</p>
-<p style="padding-left: 8%; padding-right: 8%;">Webinar 2: New Avenues in Cybersecurity - Beyond Traditional Hacking</p>
-<p>Date: March 21, 2025</p></center>
+                    <h2>Registration</h2></center>
                     <br><br><br>
                 </div> 
                 
@@ -464,30 +447,24 @@ z-index: 100;
                 <div class="card">
                     <center><img src="{% static 'images/coin.png' %}" alt="" class="card_image">
                     <h3>Stage 2</h3>
-                    <h2>Online CTF</h2>
-<p>Date: March 29, 2025</p>
-<p>Location: Virtual</p>
-<p style="padding-left: 10%; padding-right: 10%;">Solve challenges across a wide range of domains. Open to all skill levels, from beginners to experts.</p></center>
+                    <h2>Online CTF</h2></center>
                     <br><br><br>
                 </div>  
                 
             </div>
             
             <div class="three-column">
-                <div class="card" data-info="Date: April 5, 2025<br>Location: Mumabai, India<br>">
+                <div class="card">
                     <center><img src="{% static 'images/coin.png' %}" alt="" class="card_image">
                     <h3>Stage 3</h3>
-                    <h2>Offline CTF</h2>
-<p>Date: April 5, 2025</p>
-<p>Location: Mumbai, Maharashtra</p>
-<p style="padding-left: 10%; padding-right: 10%;">Exclusive Invite only event for top qualifiers who will face intense curated challenges crafted by HaxNation experts.</p></center>
+                    <h2>Offline CTF</h2></center>
                     <br><br><br>
                 </div>  
                 
             </div>
 
         </div>
-
+<div class="info-box" id="infoBox"></div>
         <br><br><br><br><br><br>
     </section>
     <footer>
