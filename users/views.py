@@ -17,6 +17,7 @@ def get_base_context():
     return {
         'settings': settings,
         'social_links': settings.SOCIAL_LINKS,
+        'meta': settings.SITE_META,
         'whatsapp_sponsor_number': settings.WHATSAPP_SPONSOR_NUMBER,
         'whatsapp_sponsor_text': settings.WHATSAPP_SPONSOR_TEXT,
         'whatsapp_footer_number': settings.WHATSAPP_FOOTER_NUMBER,

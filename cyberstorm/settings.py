@@ -15,7 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--w!_tfqpzgvm!ccha+_jm!=5mkllgb(d#06_y=jt3y(^6(tu!='
 
 # Set DEBUG to True in development, False in production
-DEBUG = True  # Only during development!
+DEBUG = False  # Only during development!
 
 # Allowed hosts
 ALLOWED_HOSTS = [
@@ -56,7 +56,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
-    'info'
+    'info',
+    'django.contrib.sitemaps',
 ]
 
 # Middleware
@@ -191,3 +192,13 @@ WHATSAPP_FOOTER_NUMBER = "919152375564"
 WHATSAPP_FOOTER_TEXT = "Hi!%20I%20want%20to%20know%20more%20about%20Cyberstorm"
 WHATSAPP_SPONSOR_NUMBER = "919152375564"
 WHATSAPP_SPONSOR_TEXT = "Hi!%20I'm%20interested%20in%20sponsoring%20Cyberstorm"
+
+# Website Meta Configuration
+SITE_META = {
+    'SITE_URL': 'https://cyberstorm.gdgsiesgst.site',
+    'SITE_NAME': 'Cyberstorm CTF',
+    'SITE_TITLE': 'Cyberstorm CTF - The Ultimate One Piece Themed Capture The Flag',
+    'SITE_DESCRIPTION': "Join Mumbai's Largest Capture the Flag adventure! A One Piece inspired cybersecurity competition where you can test your skills and claim the ultimate treasure.",
+    'SITE_IMAGE': 'images/preview.png',
+    'TWITTER_HANDLE': '@gdgsiesgst',
+}
