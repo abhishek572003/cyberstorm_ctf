@@ -8,10 +8,25 @@ import logging
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import random
+from django.conf import settings
+from django.urls import reverse
 
 logger = logging.getLogger(__name__)
 
+def get_base_context():
+    return {
+        'settings': settings,
+        'social_links': settings.SOCIAL_LINKS,
+        'whatsapp_sponsor_number': settings.WHATSAPP_SPONSOR_NUMBER,
+        'whatsapp_sponsor_text': settings.WHATSAPP_SPONSOR_TEXT,
+        'whatsapp_footer_number': settings.WHATSAPP_FOOTER_NUMBER,
+        'whatsapp_footer_text': settings.WHATSAPP_FOOTER_TEXT,
+        'contact_email': settings.CONTACT_EMAIL,
+        'cc_email': settings.CC_EMAIL
+    }
+
 def register(request):
+    context = get_base_context()
     if request.method == 'POST':
         try:
             # Get form data
@@ -22,7 +37,7 @@ def register(request):
             # Validate passwords match
             if password != confirm_password:
                 messages.error(request, 'Passwords do not match!')
-                return render(request, 'users/register.html')
+                return render(request, 'users/register.html', context)
 
             is_professional = request.POST.get('is_professional', False) == 'on'
             members_count = int(request.POST.get('members_count', 1))
@@ -34,12 +49,12 @@ def register(request):
 
             if not all([leader_name, leader_email, leader_phone]):
                 messages.error(request, 'Team leader details are required!')
-                return render(request, 'users/register.html')
+                return render(request, 'users/register.html', context)
 
             # Check if team name already exists
             if Team.objects.filter(team_name=team_name).exists():
                 messages.error(request, 'Team name already exists!')
-                return render(request, 'users/register.html')
+                return render(request, 'users/register.html', context)
 
             # Create team
             team = Team.objects.create_user(
@@ -55,11 +70,6 @@ def register(request):
             team.save()
 
             # Store member details
-            member_names = []
-            member_emails = []
-            member_phones = []
-
-            # Create team members
             for i in range(members_count):
                 name = request.POST.get(f'member_name_{i}')
                 email = request.POST.get(f'member_email_{i}')
@@ -73,28 +83,18 @@ def register(request):
                         phone=phone,
                         is_leader=(i == 0)
                     )
-                    
-                    if i > 0:  # Skip leader as they're already stored
-                        member_names.append(name)
-                        member_emails.append(email)
-                        member_phones.append(phone)
 
-            # Update team with member lists
-            team.member_names = ','.join(member_names)
-            team.member_emails = ','.join(member_emails)
-            team.member_phones = ','.join(member_phones)
-            team.save()
-
-            # Log in the new team
+            # Auto login after registration
             login(request, team)
-            messages.success(request, 'Team registered successfully!')
-            return redirect('home')
+            messages.success(request, 'Registration successful! Welcome aboard!')
+            return redirect('profile')
 
         except Exception as e:
+            logger.error(f"Registration error: {str(e)}")
             messages.error(request, f'Registration failed: {str(e)}')
-            return render(request, 'users/register.html')
+            return render(request, 'users/register.html', context)
 
-    return render(request, 'users/register.html')
+    return render(request, 'users/register.html', context)
 
 def login_view(request):
     if request.method == "POST":
@@ -148,4 +148,24 @@ def roll_dice(request):
         })
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)})
+
+def index(request):
+    context = get_base_context()
+    return render(request, 'info/index.html', context)
+
+def about(request):
+    context = get_base_context()
+    return render(request, 'info/about.html', context)
+
+def schedule(request):
+    context = get_base_context()
+    return render(request, 'info/schedule.html', context)
+
+def rules(request):
+    context = get_base_context()
+    return render(request, 'info/rules.html', context)
+
+def sponsors(request):
+    context = get_base_context()
+    return render(request, 'info/sponsors.html', context)
 

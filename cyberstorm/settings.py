@@ -171,3 +171,23 @@ LOGGING = {
         },
     },
 }
+
+# Social Media Links Configuration
+SOCIAL_LINKS = {
+    'LINKTREE': 'https://linktr.ee/gdgsiesgst',
+    'INSTAGRAM': 'https://www.instagram.com/gdgoncampus.siesgst_/',
+    'LINKEDIN': 'https://www.linkedin.com/company/google-developer-groups-siesgst/',
+    'WHATSAPP_GROUP': 'https://chat.whatsapp.com/CWmRIxITylRKbBkDzjrhfD',
+    'TWITTER': 'https://x.com/gdgsiesgst'
+}
+
+# Contact Configuration
+CONTACT_EMAIL = "gdgsiesgst@gmail.com"
+CC_EMAIL = "gdgoncampus@sies.edu.in"
+
+# WhatsApp Configuration
+WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/CWmRIxITylRKbBkDzjrhfD"
+WHATSAPP_FOOTER_NUMBER = "919152375564"
+WHATSAPP_FOOTER_TEXT = "Hi!%20I%20want%20to%20know%20more%20about%20Cyberstorm"
+WHATSAPP_SPONSOR_NUMBER = "919152375564"
+WHATSAPP_SPONSOR_TEXT = "Hi!%20I'm%20interested%20in%20sponsoring%20Cyberstorm"
