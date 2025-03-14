@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team Registration</title>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             background: url('{% static "images/registerbg.png" %}') no-repeat center center fixed;
@@ -24,15 +25,21 @@
         }
         label {
             display: block;
-            text-align: left;
+            margin-bottom: 5px;
+            color: rgba(255, 235, 153, 0.8);
+            font-size: 1rem;
         }
         input {
             width: 100%;
-            padding: 8px;
-            margin: 5px 0;
+            padding: 12px 40px;
+            margin: 8px 0;
             background: rgba(255, 255, 255, 0.3);
-            border: none;
+            border: 2px solid transparent;
             color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: border 0.3s ease;
         }
         button {
             background: #1E1E1E;
@@ -117,6 +124,15 @@ p, label{
 
     .burger-menu {
         display: block;
+    }
+
+    form {
+        width: 90%;
+        padding: 15px;
+    }
+    
+    input {
+        padding: 10px 35px;
     }
 }
 /* Footer */
@@ -206,6 +222,736 @@ footer {
                 margin: 10px 0;
             }
         }
+
+        .input-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        input::placeholder {
+            color: rgba(255, 235, 153, 0.8); /* Light yellow color for placeholders */
+        }
+        
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 20px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #1E1E1E;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #FFD700;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .toggle-label {
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .member-select {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .member-option {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .member-option:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .member-option.selected {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.2);
+        }
+        
+        .member-option i {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .section-divider {
+            position: relative;
+            margin: 30px 0;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-divider::before,
+        .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.5), transparent);
+        }
+
+        .section-divider span {
+            color: #FFD700;
+            padding: 0 15px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .member-card {
+            background: rgba(30, 30, 30, 0.6);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease-out;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .registration-type {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .reg-option {
+            flex: 1;
+            max-width: 200px;
+            padding: 15px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reg-option:hover {
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .reg-option.selected {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .reg-option i {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: #FFD700;
+        }
+
+        .reg-option h3 {
+            margin: 10px 0;
+            color: #FFD700;
+        }
+
+        .shimmer {
+            background: linear-gradient(90deg, 
+                rgba(255,215,0,0) 0%,
+                rgba(255,215,0,0.2) 50%,
+                rgba(255,215,0,0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .fun-fact-dialog {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(30, 30, 30, 0.95);
+            border: 2px solid #FFD700;
+            border-radius: 15px;
+            padding: 25px;
+            z-index: 1000;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .fun-fact-content {
+            position: relative;
+            color: white;
+        }
+
+        .fun-fact-content h3 {
+            color: #FFD700;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .fun-fact-content i {
+            margin-right: 10px;
+        }
+
+        .close-fun-fact {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            cursor: pointer;
+            color: #FFD700;
+            transition: transform 0.3s ease;
+        }
+
+        .close-fun-fact:hover {
+            transform: scale(1.2);
+        }
+
+        .gdg-love-section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .gdg-love-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #FFD700;
+            font-size: 1.1rem;
+        }
+
+        .gdg-love-content i {
+            color: #ff4444;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .input-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        input::placeholder {
+            color: rgba(255, 235, 153, 0.8); /* Light yellow color for placeholders */
+        }
+        
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 20px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #1E1E1E;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #FFD700;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .toggle-label {
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .member-select {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .member-option {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .member-option:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .member-option.selected {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.2);
+        }
+        
+        .member-option i {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .section-divider {
+            position: relative;
+            margin: 30px 0;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-divider::before,
+        .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.5), transparent);
+        }
+
+        .section-divider span {
+            color: #FFD700;
+            padding: 0 15px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .member-card {
+            background: rgba(30, 30, 30, 0.6);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease-out;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .registration-type {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .reg-option {
+            flex: 1;
+            max-width: 200px;
+            padding: 15px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reg-option:hover {
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .reg-option.selected {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .reg-option i {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: #FFD700;
+        }
+
+        .reg-option h3 {
+            margin: 10px 0;
+            color: #FFD700;
+        }
+
+        .shimmer {
+            background: linear-gradient(90deg, 
+                rgba(255,215,0,0) 0%,
+                rgba(255,215,0,0.2) 50%,
+                rgba(255,215,0,0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .fun-fact-dialog {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(30, 30, 30, 0.95);
+            border: 2px solid #FFD700;
+            border-radius: 15px;
+            padding: 25px;
+            z-index: 1000;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .fun-fact-content {
+            position: relative;
+            color: white;
+        }
+
+        .fun-fact-content h3 {
+            color: #FFD700;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .fun-fact-content i {
+            margin-right: 10px;
+        }
+
+        .close-fun-fact {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            cursor: pointer;
+            color: #FFD700;
+            transition: transform 0.3s ease;
+        }
+
+        .close-fun-fact:hover {
+            transform: scale(1.2);
+        }
+
+        .gdg-love-section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .gdg-love-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #FFD700;
+            font-size: 1.1rem;
+        }
+
+        .gdg-love-content i {
+            color: #ff4444;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .input-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 40px;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid transparent;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        /* Add these styles for validation effects */
+        .input-error {
+            /* Remove */
+        }
+
+        @keyframes errorGlow {
+            /* Remove */
+        }
+
+        .input-success {
+            /* Remove */
+        }
+
+        /* Update button styles */
+        button[type="submit"] {
+            background: #1E1E1E;
+            color: #FFD700;
+            padding: 12px 30px;
+            border: 2px solid #FFD700;
+            border-radius: 5px;
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            width: 200px;
+        }
+
+        button[type="submit"]:hover:not(:disabled) {
+            background: #FFD700;
+            color: #1E1E1E;
+            transform: translateY(-2px);
+        }
+
+        button[type="submit"]:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #666;
+            color: #666;
+            background: #1E1E1E;
+        }
+
+        /* Error message styles */
+        .error-message {
+            /* Remove */
+        }
+
+        .error-message.show {
+            /* Remove */
+        }
+
+        /* Password requirements box */
+        .password-requirements {
+            /* Remove */
+        }
+
+        .password-requirements.show {
+            /* Remove */
+        }
+
+        .requirement {
+            /* Remove */
+        }
+
+        .requirement.met {
+            /* Remove */
+        }
+
+        .requirement i {
+            /* Remove */
+        }
+
+        /* Add these new styles */
+        .password-peek-message {
+            display: none;
+            position: absolute;
+            background: rgba(30, 30, 30, 0.95);
+            color: #ff4444;
+            padding: 10px;
+            border: 2px solid #ff4444;
+            border-radius: 5px;
+            font-size: 1rem;
+            z-index: 1000;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            text-shadow: 0 0 5px #ff4444;
+            animation: glitch 0.3s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translateY(-50%) skew(0deg); }
+            20% { transform: translateY(-50%) skew(2deg); }
+            40% { transform: translateY(-50%) skew(-2deg); }
+            60% { transform: translateY(-50%) skew(1deg); }
+            80% { transform: translateY(-50%) skew(-1deg); }
+            100% { transform: translateY(-50%) skew(0deg); }
+        }
+
+        .invalid-input {
+            border: 2px solid #ff4444 !important;
+        }
+
+        .valid-input {
+            border: 2px solid #4CAF50 !important;
+        }
+
+        #registerButton {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -232,34 +978,109 @@ footer {
         <div class="burger-menu" onclick="toggleMenu()">☰</div>
     </nav>
 
-    <h1>Register Your Team</h1>
-    
-    
-    
-    <form method="post">
+    <h1>Team Registration</h1>
+
+
+
+    <form method="post" id="registrationForm" novalidate>
         {% for message in messages %}
         <p>{{ message }}</p>
-    {% endfor %}
+        {% endfor %}
         {% csrf_token %}
-        <label>Team Name:</label>
-        <input type="text" name="team_name" required>
+        <div class="input-container">
+            <i class="fas fa-users input-icon"></i>
+            <input type="text" name="team_name" placeholder="Team Name" required>
+        </div>
 
-        <label>Team Leader Name:</label>
-        <input type="text" name="team_leader" required>
+        <div class="registration-type">
+            <div class="reg-option selected" data-type="individual">
+                <i class="fas fa-user"></i>
+                <h3>Individual</h3>
+                <p>Register as a single participant</p>
+            </div>
+            <div class="reg-option" data-type="team">
+                <i class="fas fa-users"></i>
+                <h3>Team</h3>
+                <p>Register with 2-4 members</p>
+            </div>
+        </div>
 
-        <label>Team Leader Email:</label>
-        <input type="email" name="team_leader_email" required>
+        <!-- Add back the team size selection -->
+        <div class="input-container team-size-container" style="display: none;">
+            <label style="color: rgba(255, 235, 153, 0.8);">Select Team Size:</label>
+            <div class="member-select">
+                <div class="member-option" data-members="2">
+                    <i class="fas fa-user-friends"></i>
+                    <p>2 Members</p>
+                </div>
+                <div class="member-option" data-members="3">
+                    <i class="fas fa-users"></i>
+                    <p>3 Members</p>
+                </div>
+                <div class="member-option" data-members="4">
+                    <i class="fas fa-user-group"></i>
+                    <p>4 Members</p>
+                </div>
+            </div>
+            <input type="hidden" name="members_count" id="members_count" value="2">
+        </div>
 
-        <label>Number of Members (Max 4):</label>
-        <input type="number" id = "members_count" name="members_count" min="1" max="4" required>
-        <p> Enter details of members other than leader</p>
+        <div class="toggle-container">
+            <div class="toggle-label">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Student</span>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" name="is_professional" id="professionToggle">
+                <span class="slider"></span>
+            </label>
+            <div class="toggle-label">
+                <i class="fas fa-briefcase"></i>
+                <span>Professional</span>
+            </div>
+        </div>
+
+        <div class="section-divider shimmer">
+            <span><i class="fas fa-shield-alt"></i> Account Security</span>
+        </div>
+
+        <div class="input-container">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" name="password" id="password" placeholder="Password" required>
+            <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+            <div class="password-peek-message">Access Denied: Security Protocol Active</div>
+        </div>
+
+        <div class="input-container">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required>
+            <i class="fas fa-eye password-toggle" id="toggleConfirmPassword"></i>
+        </div>
+
+        <!-- Add fun fact dialog -->
+        <div id="funFactDialog" class="fun-fact-dialog">
+            <div class="fun-fact-content">
+                <i class="fas fa-times close-fun-fact"></i>
+                <h3><i class="fas fa-lightbulb"></i> Cybersecurity Fun Fact</h3>
+                <p id="randomFact"></p>
+            </div>
+        </div>
+
+        <div class="section-divider shimmer">
+            <span><i class="fas fa-users"></i> Team Members</span>
+        </div>
 
         <div id="members"></div>
 
-        <label>Password:</label>
-        <input type="password" name="password" required>
-        <br><br>
-        <button type="submit">Register</button>
+        <!-- Add pretty GDG love section -->
+        <div class="gdg-love-section">
+            <div class="gdg-love-content">
+                <i class="fas fa-heart"></i>
+                <span>Made with love by GDG on Campus SIES GST</span>
+            </div>
+        </div>
+
+        <button type="submit" id="registerButton">Register Team</button>
     </form>
 <br><br><br>
 <footer>
@@ -306,26 +1127,208 @@ footer {
 </footer>
 
     <script>
-        document.querySelector("input[name='members_count']").addEventListener("input", function() {
-            let count = parseInt(this.value);
+        // Member selection
+        const memberOptions = document.querySelectorAll('.member-option');
+        const membersCountInput = document.getElementById('members_count');
+
+        memberOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                memberOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                const count = this.dataset.members;
+                membersCountInput.value = count;
+                updateMemberFields(parseInt(count));
+            });
+        });
+
+        // Set initial selection
+        memberOptions[0].classList.add('selected');
+
+        function updateMemberFields(count) {
             let membersDiv = document.getElementById("members");
             membersDiv.innerHTML = "";
-            for (let i = 1; i < count; i++) {
-                membersDiv.innerHTML += `<label>Member ${i} Name:</label><input type="text" name="member_name_${i}" required>`;
-                membersDiv.innerHTML += `<label>Member ${i} Email:</label><input type="email" name="member_email_${i}" required>`;
+
+            for (let i = 0; i < count; i++) {
+                membersDiv.innerHTML += `
+                    <div class="member-card">
+                        <h3 style="color: #FFD700; margin-bottom: 15px;">
+                            <i class="fas fa-user"></i> Team Member ${i + 1}
+                        </h3>
+                        <div class="input-container">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" name="member_name_${i}" placeholder="Member ${i + 1} Name" required>
+                        </div>
+                        <div class="input-container">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" name="member_email_${i}" placeholder="Member ${i + 1} Email" required>
+                        </div>
+                        <div class="input-container">
+                            <i class="fas fa-phone input-icon"></i>
+                            <input type="tel" name="member_phone_${i}" placeholder="Member ${i + 1} Phone" pattern="[0-9]{10}" required>
+                        </div>
+                    </div>`;
+            }
+        }
+
+        // Professional/Student toggle animation
+        const professionToggle = document.getElementById('professionToggle');
+        professionToggle.addEventListener('change', function() {
+            const studentIcon = document.querySelector('.fa-graduation-cap');
+            const professionalIcon = document.querySelector('.fa-briefcase');
+
+            if (this.checked) {
+                studentIcon.style.opacity = '0.5';
+                professionalIcon.style.opacity = '1';
+            } else {
+                studentIcon.style.opacity = '1';
+                professionalIcon.style.opacity = '0.5';
             }
         });
+
+        // Update the registration type toggle code
+        const regOptions = document.querySelectorAll('.reg-option');
+        const teamSizeContainer = document.querySelector('.team-size-container');
+
+        regOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                regOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+
+                if (this.dataset.type === 'individual') {
+                    teamSizeContainer.style.display = 'none';
+                    updateMemberFields(1);
+                } else {
+                    teamSizeContainer.style.display = 'block';
+                    updateMemberFields(2); // Default to 2 members when team is selected
+                }
+            });
+        });
+
+        // Initialize with individual registration
+        teamSizeContainer.style.display = 'none';
+        updateMemberFields(1);
+
+        // Add fun fact dialog functionality
+        document.getElementById('securitySection').addEventListener('click', function() {
+            const funFactDialog = document.getElementById('funFactDialog');
+            const randomFacts = [
+                "The first computer virus was created in 1986 and was called 'Brain'.",
+                "The term 'bug' in computing came from an actual moth that was found in Harvard's Mark II computer in 1947.",
+                "The average cost of a data breach in 2021 was $4.24 million.",
+                "About 95% of cybersecurity breaches are caused by human error.",
+                "A new malware is created every 4.2 seconds."
+            ];
+
+            const randomFact = randomFacts[Math.floor(Math.random() * randomFacts.length)];
+            document.getElementById('randomFact').textContent = randomFact;
+            funFactDialog.style.display = 'block';
+        });
+
+        document.querySelector('.close-fun-fact').addEventListener('click', function() {
+            document.getElementById('funFactDialog').style.display = 'none';
+        });
+
+        // Keep only the basic password toggle functionality
+        function setupPasswordToggle(toggleBtn, passwordInput) {
+            toggleBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
+        }
+
+        setupPasswordToggle(document.getElementById('togglePassword'), document.getElementById('password'));
+        setupPasswordToggle(document.getElementById('toggleConfirmPassword'), document.getElementById('confirm_password'));
     </script>
     <script>
      function toggleMenu() {
     const navLinks = document.querySelector(".nav-links");
     navLinks.classList.toggle("show");
     }
-    document.getElementById("members_count").addEventListener("input", function () {
-    if (this.value > 4) {
-      this.value = 4;
-    }
-  });
-      </script>
+    </script>
+    <script>
+        // Add these new functions
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function validatePhone(phone) {
+            return /^[0-9]{10}$/.test(phone);
+        }
+
+        function validateForm() {
+            const teamName = document.querySelector('input[name="team_name"]').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            let isValid = true;
+            
+            // Validate all member fields
+            const memberInputs = document.querySelectorAll('[name^="member_"]');
+            memberInputs.forEach(input => {
+                if (!input.value) isValid = false;
+                
+                if (input.name.includes('email')) {
+                    if (!validateEmail(input.value)) {
+                        input.classList.add('invalid-input');
+                        isValid = false;
+                    } else {
+                        input.classList.remove('invalid-input');
+                        input.classList.add('valid-input');
+                    }
+                }
+                
+                if (input.name.includes('phone')) {
+                    if (!validatePhone(input.value)) {
+                        input.classList.add('invalid-input');
+                        isValid = false;
+                    } else {
+                        input.classList.remove('invalid-input');
+                        input.classList.add('valid-input');
+                    }
+                }
+            });
+
+            // Password match validation
+            const confirmPasswordInput = document.getElementById('confirm_password');
+            if (password !== confirmPassword) {
+                confirmPasswordInput.classList.add('invalid-input');
+                isValid = false;
+            } else {
+                confirmPasswordInput.classList.remove('invalid-input');
+                confirmPasswordInput.classList.add('valid-input');
+            }
+
+            // Show/hide register button
+            document.getElementById('registerButton').style.display = 
+                (isValid && teamName && password && confirmPassword) ? 'inline-block' : 'none';
+        }
+
+        // Modify password toggle functionality
+        function setupPasswordToggle(toggleBtn, passwordInput) {
+            const messageDiv = toggleBtn.parentElement.querySelector('.password-peek-message');
+            
+            toggleBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                messageDiv.style.display = 'block';
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 2000);
+            });
+        }
+
+        // Add event listeners for real-time validation
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', validateForm);
+        });
+
+        // Initialize validation on page load
+        document.addEventListener('DOMContentLoaded', validateForm);
+
+        // Setup password toggles
+        setupPasswordToggle(document.getElementById('togglePassword'), document.getElementById('password'));
+        setupPasswordToggle(document.getElementById('toggleConfirmPassword'), document.getElementById('confirm_password'));
+    </script>
 </body>
 </html>

@@ -31,6 +31,9 @@ class Team(AbstractBaseUser, PermissionsMixin):
     cleared_round2 = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+    phone_number = models.CharField(max_length=15, blank=True)
+    is_professional = models.BooleanField(default=False)
+    member_phones = models.TextField(blank=True)  # Store phone numbers as CSV
 
     objects = TeamManager()
 
