@@ -964,11 +964,9 @@ footer {
             <li><a href="{% url 'schedule' %}">Schedule</a></li>
             <li><a href="{% url 'sponsors' %}">Sponsors</a></li>
             <li><a href="{% url 'rules' %}">Rules</a></li>
-        </ul>
-        <ul class="nav-links">
             {% if user.is_authenticated %}
-                <li><a href="{% url 'logout' %}">Logout</a></li>
                 <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
             {% else %}
                 <li><a href="{% url 'register' %}" class="register-btn">Register</a></li>
                 <li><a href="{% url 'login' %}">Login</a></li>
