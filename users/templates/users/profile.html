@@ -125,7 +125,8 @@
         }
 
         .timeline-content.left {
-            margin-right: 50px;
+            margin-right: 50%;
+            text-align: right;
         }
 
         .timeline-content.right {
@@ -308,11 +309,12 @@
         }
 
         @keyframes diceRoll {
-            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-            25% { transform: rotateX(360deg) rotateY(180deg) rotateZ(90deg); }
-            50% { transform: rotateX(720deg) rotateY(360deg) rotateZ(180deg); }
-            75% { transform: rotateX(1080deg) rotateY(540deg) rotateZ(270deg); }
-            100% { transform: rotateX(1440deg) rotateY(720deg) rotateZ(360deg); }
+            0% { transform: rotate(0deg) scale(1); opacity: 1; }
+            20% { transform: rotate(180deg) scale(1.4); opacity: 0.8; }
+            40% { transform: rotate(360deg) scale(1.2); opacity: 0.6; }
+            60% { transform: rotate(540deg) scale(1.4); opacity: 0.8; }
+            80% { transform: rotate(720deg) scale(1.2); opacity: 0.9; }
+            100% { transform: rotate(1080deg) scale(1); opacity: 1; }
         }
 
         .dice-icon {
@@ -347,11 +349,13 @@
             border-radius: 8px;
             text-align: center;
             transform-style: preserve-3d;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
         }
 
         .stat-card:hover {
-            transform: translateZ(20px);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
         }
 
         .dice-face {
@@ -365,6 +369,106 @@
             font-size: 1.5em;
             transform-style: preserve-3d;
             transition: transform 0.3s ease;
+        }
+
+        /* Ship animation */
+        @keyframes shipFloat {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(2px, -5px) rotate(1deg); }
+            50% { transform: translate(0, -8px) rotate(0deg); }
+            75% { transform: translate(-2px, -5px) rotate(-1deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        /* Confetti animation */
+        @keyframes confettiRain {
+            0% { transform: translateY(0) rotateZ(0deg); }
+            100% { transform: translateY(100vh) rotateZ(720deg); }
+        }
+
+        .ship-icon {
+            animation: shipFloat 4s ease-in-out infinite;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background-color: #FFD700;
+            pointer-events: none;
+            z-index: 9999;
+            border-radius: 50%;
+            transform-origin: center;
+        }
+
+        @keyframes confettiDrop {
+            0% {
+                transform: translateY(-100vh) rotateZ(0deg) scale(0);
+                opacity: 1;
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(0) rotateZ(360deg) scale(1);
+            }
+            100% {
+                transform: translateY(100vh) rotateZ(720deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Skull animation for Round 2 */
+        @keyframes skullFloat {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .skull-icon {
+            animation: skullFloat 2s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        /* Ship floating animation */
+        @keyframes shipRocking {
+            0%, 100% { transform: rotate(-3deg) translateY(0); }
+            50% { transform: rotate(3deg) translateY(-10px); }
+        }
+
+        /* Crown sparkling animation */
+        @keyframes crownSparkle {
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 5px gold); }
+            50% { filter: brightness(1.5) drop-shadow(0 0 15px gold); }
+        }
+
+        /* Crew member icon pulse */
+        @keyframes crewPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .fa-ship {
+            animation: shipRocking 3s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        .fa-crown {
+            animation: crownSparkle 2s ease-in-out infinite;
+            color: #FFD700;
+        }
+
+        .fa-user-friends {
+            animation: crewPulse 2s ease-in-out infinite;
+            color: #4ECDC4;
+        }
+
+        .timeline-content {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
         }
     </style>
 </head>
@@ -476,7 +580,7 @@
                 <div class="timeline-item">
                     <div class="timeline-content left">
                         <div class="timeline-icon">
-                            <i class="fas fa-dice-two"></i>
+                            <i class="fas fa-skull-crossbones skull-icon"></i>
                         </div>
                         <h3>Round 2</h3>
                         <p>The final showdown!</p>
@@ -511,13 +615,12 @@
 
         async function rollDice(diceElement) {
             const dice = diceElement.querySelector('.dice-icon');
-            dice.style.pointerEvents = 'none';  // Prevent multiple clicks
+            dice.style.pointerEvents = 'none';
             
             // Start animation
             dice.style.animation = 'diceRoll 2s ease-out';
             
             try {
-                // Make API call to update bounty
                 const response = await fetch('{% url "roll_dice" %}', {
                     method: 'POST',
                     headers: {
@@ -528,19 +631,27 @@
                 
                 const data = await response.json();
                 if (data.success) {
+                    // Show rolling numbers during animation
+                    let rolls = 0;
+                    const rollInterval = setInterval(() => {
+                        const randomNum = Math.floor(Math.random() * 6) + 1;
+                        dice.innerHTML = `<i class="fas fa-dice-${getNumberWord(randomNum)}"></i>`;
+                        rolls++;
+                        if (rolls > 10) {
+                            clearInterval(rollInterval);
+                            // Show final number
+                            dice.innerHTML = `<i class="fas fa-dice-${getNumberWord(data.roll_value)}"></i>`;
+                        }
+                    }, 150);
+
                     // Update bounty display
                     const bountyElement = document.querySelector('.bounty-info p');
                     bountyElement.textContent = `Current Bounty: ${data.new_bounty} Points`;
-                    
-                    // Show rolled number
-                    const number = data.roll_value;
-                    dice.innerHTML = `<i class="fas fa-dice-${getNumberWord(number)}"></i>`;
                 }
             } catch (error) {
                 console.error('Error rolling dice:', error);
             }
             
-            // Reset after animation
             setTimeout(() => {
                 dice.style.pointerEvents = 'auto';
                 dice.style.animation = '';
@@ -551,6 +662,67 @@
             const words = ['one', 'two', 'three', 'four', 'five', 'six'];
             return words[number - 1];
         }
+
+        // Enhanced confetti function
+        function createConfetti(x, y) {
+            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#ffffff', '#E3A018'];
+            const shapes = ['★', '●', '♦', '♠', '⚔️', '☠️', '⚓'];
+            
+            for (let i = 0; i < 150; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                
+                // Random properties
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                const angle = Math.random() * 360;
+                const velocity = 50 + Math.random() * 50;
+                const spread = window.innerWidth;  // Use full screen width
+                
+                // Set position and style
+                confetti.style.left = (Math.random() * spread) + 'px';
+                confetti.style.top = y + 'px';
+                confetti.style.backgroundColor = color;
+                confetti.innerHTML = shape;
+                confetti.style.transform = `rotate(${angle}deg)`;
+                
+                // Calculate random spread
+                const spreadX = (Math.random() - 0.5) * spread;
+                const duration = 2 + Math.random() * 3;
+                
+                // Apply animation
+                confetti.style.animation = `confettiDrop ${duration}s ease-out forwards`;
+                confetti.style.transform = `translate(${spreadX}px, -100vh) rotate(${angle}deg)`;
+                
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), duration * 1000);
+            }
+        }
+
+        // Add click handlers for rounds
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.timeline-content').forEach(content => {
+                const badge = content.querySelector('.status-badge.completed');
+                
+                if (badge) {
+                    content.addEventListener('click', (e) => {
+                        if (!badge.classList.contains('completed')) return;
+                        
+                        const rect = content.getBoundingClientRect();
+                        createConfetti(
+                            rect.left + rect.width / 2,
+                            rect.top
+                        );
+                        
+                        // Add a small bounce animation to the badge
+                        content.style.transform = 'scale(1.1)';
+                        setTimeout(() => {
+                            content.style.transform = 'scale(1)';
+                        }, 200);
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html> 
