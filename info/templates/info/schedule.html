@@ -428,7 +428,7 @@ z-index: 100;
             
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}">Logout</a></li>
-</ul><a href="" class="register-btn">Profile</a></li>
+                </ul><a href="{% url 'profile' %}" class="register-btn">Profile</a></li>
                 {% else %}
                 
                     <li><a href="{% url 'login' %}">Login</a></li>

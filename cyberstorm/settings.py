@@ -15,7 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--w!_tfqpzgvm!ccha+_jm!=5mkllgb(d#06_y=jt3y(^6(tu!='
 
 # Set DEBUG to True in development, False in production
-DEBUG = False  # Change to False in production!
+DEBUG = True  # Only during development!
 
 # Allowed hosts
 ALLOWED_HOSTS = [
@@ -150,3 +150,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #         },
 #     },
 # }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
