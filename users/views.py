@@ -3,6 +3,13 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Team, TeamMember
+from django.contrib.auth.decorators import login_required
+import logging
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+import random
+
+logger = logging.getLogger(__name__)
 
 def register(request):
     if request.method == 'POST':
@@ -108,6 +115,37 @@ def logout_view(request):
     logout(request)
     return redirect("login")
 
+@login_required
 def profile(request):
-    return render(request, "users/profile.html")
+    try:
+        context = {
+            'user': request.user,
+            'team_members': request.user.members.all() if hasattr(request.user, 'members') else []
+        }
+        return render(request, 'users/profile.html', context)
+    except Exception as e:
+        logger.error(f"Error in profile view: {str(e)}")
+        # For debugging only - remove in production
+        raise e
+
+@require_POST
+def roll_dice(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'success': False, 'error': 'Not authenticated'})
+    
+    try:
+        roll_value = random.randint(1, 6)
+        bounty_increase = roll_value * 0.1  # Small fraction of points
+        
+        # Update user's bounty
+        request.user.points = (request.user.points or 0) + bounty_increase
+        request.user.save()
+        
+        return JsonResponse({
+            'success': True,
+            'roll_value': roll_value,
+            'new_bounty': round(request.user.points, 1)
+        })
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
 
