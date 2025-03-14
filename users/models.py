@@ -9,9 +9,9 @@ class TeamManager(BaseUserManager):
         team = self.model(
             team_name=team_name,
             team_leader=team_leader,
-            team_leader_email=team_leader_email,
+            team_leader_email=self.normalize_email(team_leader_email),
         )
-        team.set_password(password)  # Encrypt password
+        team.set_password(password)
         team.save(using=self._db)
         return team
 
@@ -34,6 +34,7 @@ class Team(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(max_length=15, blank=True)
     is_professional = models.BooleanField(default=False)
     member_phones = models.TextField(blank=True)  # Store phone numbers as CSV
+    created_at = models.DateTimeField(auto_now_add=True, null=True)  # Make nullable
 
     objects = TeamManager()
 
@@ -52,3 +53,14 @@ class Team(AbstractBaseUser, PermissionsMixin):
     @property
     def is_staff(self):
         return self.is_admin
+
+class TeamMember(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='members')
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    is_leader = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.team.name})"
