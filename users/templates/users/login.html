@@ -219,6 +219,87 @@ footer {
                 margin: 10px 0;
             }
         }
+
+        /* Add these animation styles */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Apply animations to elements */
+        h1 {
+            animation: fadeIn 1s ease-out;
+        }
+        
+        form {
+            animation: slideUp 0.8s ease-out;
+        }
+        
+        button[type="submit"] {
+            transition: all 0.3s ease;
+        }
+        
+        button[type="submit"]:hover {
+            background: #FFD700;
+            color: #1E1E1E;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        /* Loading animation */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+        }
+        
+        .loading-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .treasure-chest {
+            width: 100px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        
+        .loading-text {
+            color: #FFD700;
+            font-size: 1.5rem;
+            margin-top: 20px;
+        }
+        
+        .loading-dots:after {
+            content: '.';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60% { content: '...'; }
+            80%, 100% { content: ''; }
+        }
     </style>
 </head>
 <body>
@@ -305,12 +386,42 @@ footer {
     </div>
 </footer>
 
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-container">
+        <img src="{% static 'images/ship.svg' %}" alt="Treasure Chest" class="treasure-chest">
+        <p class="loading-text">Unlocking your treasure<span class="loading-dots"></span></p>
+    </div>
+</div>
+
 <script>
     function toggleMenu() {
    const navLinks = document.querySelector(".nav-links");
 	navLinks.classList.toggle("show");
     }
-
-  </script>
+    
+    document.querySelector('form').addEventListener('submit', function(e) {
+        if (this.checkValidity()) {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.style.display = 'block';
+            
+            setTimeout(() => {
+            }, 1500);
+        }
+    });
+    
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.style.transition = 'all 0.3s ease';
+            this.style.borderColor = '#FFD700';
+            this.style.boxShadow = '0 0 10px rgba(255, 215, 0, 0.3)';
+        });
+        
+        input.addEventListener('blur', function() {
+            this.style.borderColor = 'transparent';
+            this.style.boxShadow = 'none';
+        });
+    });
+</script>
 </body>
 </html>
