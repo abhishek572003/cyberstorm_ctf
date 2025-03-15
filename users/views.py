@@ -170,3 +170,55 @@ def sponsors(request):
     context = get_base_context()
     return render(request, 'info/sponsors.html', context)
 
+def password_reset(request):
+    context = get_base_context()
+    
+    if request.method == 'POST':
+        team_name = request.POST.get('team_name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        new_password = request.POST.get('new_password')
+        confirm_new_password = request.POST.get('confirm_new_password')
+        
+        # Validate passwords match
+        if new_password != confirm_new_password:
+            messages.error(request, 'Passwords do not match.')
+            return render(request, 'users/password_reset.html', context)
+        
+        # Try to find the team
+        try:
+            team = Team.objects.get(team_name=team_name)
+            
+            # Verify team leader's email and phone
+            team_leader = TeamMember.objects.filter(team=team, is_leader=True).first()
+            
+            if not team_leader:
+                messages.error(request, 'Team leader information not found.')
+                return render(request, 'users/password_reset.html', context)
+            
+            if team_leader.email != email or team_leader.phone != phone:
+                messages.error(request, 'The provided information does not match our records.')
+                return render(request, 'users/password_reset.html', context)
+            
+            # Update the password
+            team.set_password(new_password)
+            team.save()
+            
+            messages.success(request, 'Password has been reset successfully!')
+            return redirect('password_reset_done')
+            
+        except Team.DoesNotExist:
+            messages.error(request, 'Team not found.')
+            return render(request, 'users/password_reset.html', context)
+        
+        except Exception as e:
+            logger.error(f"Password reset error: {str(e)}")
+            messages.error(request, f'An error occurred: {str(e)}')
+            return render(request, 'users/password_reset.html', context)
+    
+    return render(request, 'users/password_reset.html', context)
+
+def password_reset_done(request):
+    context = get_base_context()
+    return render(request, 'users/password_reset_done.html', context)
+

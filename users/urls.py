@@ -9,4 +9,6 @@ urlpatterns = [
     path("profile/", views.profile, name="profile"),
     path('roll-dice/', views.roll_dice, name='roll_dice'),
     path('sponsors/', views.sponsors, name='sponsors'),
+    path('password-reset/', views.password_reset, name='password_reset'),
+    path('password-reset/done/', views.password_reset_done, name='password_reset_done'),
 ]
