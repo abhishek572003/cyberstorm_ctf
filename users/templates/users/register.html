@@ -90,74 +90,6 @@ p, label{
     background: linear-gradient(137deg, #1E1E1E 0%, #2C2C2C 100%);
 }
 
-/* Add footer email button styles */
-.email-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: #1E1E1E;
-    color: #FFD700;
-    padding: 8px 15px;
-    border: 2px solid #FFD700;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.email-btn:hover {
-    background: #FFD700;
-    color: #1E1E1E;
-}
-
-.whatsapp-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: #25D366;
-    color: white;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.whatsapp-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
-}
-
-.sponsor-contact {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-.sponsor-whatsapp-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: #25D366;
-    color: white;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 25px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-size: 1.2rem;
-    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2);
-}
-
-.sponsor-whatsapp-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-}
-
-.sponsor-whatsapp-btn i {
-    font-size: 1.4rem;
-}
-
 .nav-links a {
     text-decoration: none;
     color: white;
@@ -1032,7 +964,7 @@ footer {
         }
 
         #registerButton {
-            display: none;
+            display: inline-grid;
         }
 
         .modal {
@@ -1104,6 +1036,95 @@ footer {
         .close-btn:hover {
             background: #FFD700;
             color: #1E1E1E;
+        }
+
+        /* Validation Styles */
+        .input-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .validation-error {
+            border: 2px solid #ff4444 !important;
+            background: rgba(255, 68, 68, 0.1) !important;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.9rem;
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            width: 100%;
+            text-align: left;
+            padding-left: 40px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .error-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Disabled Button Styles */
+        button[type="submit"]:disabled {
+            background: #444444 !important;
+            color: #888888 !important;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Error Modal Styles */
+        .error-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(30, 30, 30, 0.95);
+            border: 2px solid #FFD700;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+            animation: modalAppear 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .error-modal p {
+            color: #FFD700;
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        .error-modal i {
+            font-size: 2rem;
+            color: #FFD700;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        /* Ensure mobile compatibility */
+        @media (max-width: 768px) {
+            .error-message {
+                font-size: 0.8rem;
+                padding-left: 20px;
+            }
+            
+            .error-modal {
+                width: 90%;
+                max-width: 300px;
+            }
         }
     </style>
 </head>
@@ -1258,23 +1279,10 @@ footer {
 
         <!-- Contact Us -->
             <div class="footer-section">
-                <h3>Contact Us</h3>
-                <p>Email:</p>
-                <a href="mailto:{{ settings.CONTACT_EMAIL }}" class="email-btn">
-                    <i class="fas fa-envelope"></i>
-                    gdgsiesgst@gmail.com
-                </a>
-                <br><br>
-                <a href="mailto:{{ settings.CC_EMAIL }}" class="email-btn">
-                    <i class="fas fa-envelope"></i>
-                    gdgoncampus@sies.edu.in
-                </a>
-                <br><br>
-                <a href="https://wa.me/{{ settings.WHATSAPP_FOOTER_NUMBER }}/?text={{ settings.WHATSAPP_FOOTER_TEXT }}"
-                   class="whatsapp-btn" target="_blank">
-                    <i class="fab fa-whatsapp"></i>
-                    Chat on WhatsApp
-                </a>
+                <h3>Contact Us<h3>
+                <p>Email: </p>
+                <p>gdgsiesgst@gmail.com</p>
+                <p>gdgoncampus@sies.edu.in</p>
             </div>
 
         <!-- Follow Us -->
@@ -1301,6 +1309,12 @@ footer {
         <p>© 2025 Cyberstorm. All Rights Reserved.</p>
     </div>
 </footer>
+
+    <div id="errorModal" class="error-modal">
+        <i class="fas fa-skull-crossbones"></i>
+        <p>Ahoy! Access Denied!</p>
+        <p style="font-size: 0.9rem; color: #FFD700;">Fill in all the treasure map details correctly to proceed</p>
+    </div>
 
     <script>
         // Member selection
@@ -1435,76 +1449,90 @@ footer {
         }
 
         function validateForm() {
-            const teamName = document.querySelector('input[name="team_name"]').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm_password').value;
             let isValid = true;
+            const registerButton = document.getElementById('registerButton');
+            const inputs = document.querySelectorAll('input[required]');
             
-            // Validate all member fields
-            const memberInputs = document.querySelectorAll('[name^="member_"]');
-            memberInputs.forEach(input => {
-                if (!input.value) isValid = false;
+            inputs.forEach(input => {
+                const container = input.parentElement;
+                const errorMessage = container.querySelector('.error-message') || createErrorMessage(container);
                 
-                if (input.name.includes('email')) {
-                    if (!validateEmail(input.value)) {
-                        input.classList.add('invalid-input');
-                        isValid = false;
-                    } else {
-                        input.classList.remove('invalid-input');
-                        input.classList.add('valid-input');
-                    }
-                }
-                
-                if (input.name.includes('phone')) {
-                    if (!validatePhone(input.value)) {
-                        input.classList.add('invalid-input');
-                        isValid = false;
-                    } else {
-                        input.classList.remove('invalid-input');
-                        input.classList.add('valid-input');
-                    }
+                if (!input.value) {
+                    input.classList.add('validation-error');
+                    errorMessage.textContent = `${input.placeholder} is required`;
+                    errorMessage.classList.add('show');
+                    isValid = false;
+                } else if (input.type === 'email' && !validateEmail(input.value)) {
+                    input.classList.add('validation-error');
+                    errorMessage.textContent = 'Please enter a valid email address';
+                    errorMessage.classList.add('show');
+                    isValid = false;
+                } else if (input.name.includes('phone') && !validatePhone(input.value)) {
+                    input.classList.add('validation-error');
+                    errorMessage.textContent = 'Please enter a valid phone number';
+                    errorMessage.classList.add('show');
+                    isValid = false;
+                } else {
+                    input.classList.remove('validation-error');
+                    errorMessage.classList.remove('show');
                 }
             });
 
-            // Password match validation
-            const confirmPasswordInput = document.getElementById('confirm_password');
-            if (password !== confirmPassword) {
-                confirmPasswordInput.classList.add('invalid-input');
+            // Handle password validation
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirm_password');
+            
+            if (password.value !== confirmPassword.value) {
+                [password, confirmPassword].forEach(input => {
+                    input.classList.add('validation-error');
+                    const errorMessage = input.parentElement.querySelector('.error-message');
+                    errorMessage.textContent = 'Passwords do not match';
+                    errorMessage.classList.add('show');
+                });
                 isValid = false;
-            } else {
-                confirmPasswordInput.classList.remove('invalid-input');
-                confirmPasswordInput.classList.add('valid-input');
             }
 
-            // Show/hide register button
-            document.getElementById('registerButton').style.display = 
-                (isValid && teamName && password && confirmPassword) ? 'inline-block' : 'none';
+            registerButton.disabled = !isValid;
+            return isValid;
         }
 
-        // Modify password toggle functionality
-        function setupPasswordToggle(toggleBtn, passwordInput) {
-            const messageDiv = toggleBtn.parentElement.querySelector('.password-peek-message');
-            
-            toggleBtn.addEventListener('click', function(e) {
+        function createErrorMessage(container) {
+            const errorMessage = document.createElement('span');
+            errorMessage.className = 'error-message';
+            container.appendChild(errorMessage);
+            return errorMessage;
+        }
+
+        // Handle disabled button click
+        document.getElementById('registerButton').addEventListener('click', function(e) {
+            if (this.disabled) {
                 e.preventDefault();
-                messageDiv.style.display = 'block';
+                const errorModal = document.getElementById('errorModal');
+                errorModal.style.display = 'block';
+                
+                // Auto hide after 3 seconds
                 setTimeout(() => {
-                    messageDiv.style.display = 'none';
-                }, 2000);
-            });
-        }
-
-        // Add event listeners for real-time validation
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', validateForm);
+                    errorModal.style.display = 'none';
+                }, 3000);
+            }
         });
 
-        // Initialize validation on page load
-        document.addEventListener('DOMContentLoaded', validateForm);
+        // Add input event listeners
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', validateForm);
+            input.addEventListener('blur', validateForm);
+        });
 
-        // Setup password toggles
-        setupPasswordToggle(document.getElementById('togglePassword'), document.getElementById('password'));
-        setupPasswordToggle(document.getElementById('toggleConfirmPassword'), document.getElementById('confirm_password'));
+        // Close error modal when clicking outside
+        document.addEventListener('click', function(e) {
+            const errorModal = document.getElementById('errorModal');
+            if (e.target !== errorModal && !errorModal.contains(e.target)) {
+                errorModal.style.display = 'none';
+            }
+        });
+
+        // Initial validation
+        document.addEventListener('DOMContentLoaded', validateForm);
     </script>
     <script>
     // Update the form submission
