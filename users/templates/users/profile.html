@@ -42,8 +42,18 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('{% static "images/wanted-poster-bg.png" %}') no-repeat center center;
+            background: rgba(30, 30, 30, 0.2);
             opacity: 0.1;
+            z-index: 0;
+        }
+
+        .team-card-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 200px;
+            color: rgba(255, 215, 0, 0.05);
             z-index: 0;
         }
 
@@ -59,7 +69,16 @@
             height: 100px;
             border-radius: 50%;
             border: 3px solid #FFD700;
+            background-color: rgba(30, 30, 30, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             animation: bounceIn 1s ease-out;
+        }
+
+        .team-avatar i {
+            font-size: 50px;
+            color: #FFD700;
         }
 
         .team-info h1 {
@@ -684,8 +703,14 @@
 
     <div class="profile-container">
         <div class="team-card">
+            <!-- Add a fallback icon that will always display -->
+            <i class="fas fa-skull-crossbones team-card-icon"></i>
+            
             <div class="team-header">
-                <div class="team-avatar"></div>
+                <div class="team-avatar">
+                    <!-- Add a default avatar icon -->
+                    <i class="fas fa-user-circle"></i>
+                </div>
                 <div class="team-info">
                     <h1>{{ user.team_name }}</h1>
                     <p class="team-status">
