@@ -190,7 +190,7 @@ CONTACT_EMAIL = "gdgsiesgst@gmail.com"
 CC_EMAIL = "gdgoncampus@sies.edu.in"
 
 # WhatsApp Configuration
-WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/CWmRIxITylRKbBkDzjrhfD"
+WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/H6qbjvaySMA2h8BqojwNC3"
 WHATSAPP_FOOTER_NUMBER = "919152375564"
 WHATSAPP_FOOTER_TEXT = "Hi!%20I%20want%20to%20know%20more%20about%20Cyberstorm"
 WHATSAPP_SPONSOR_NUMBER = "919152375564"
