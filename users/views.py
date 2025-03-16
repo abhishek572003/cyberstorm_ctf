@@ -118,16 +118,12 @@ def logout_view(request):
 
 @login_required
 def profile(request):
-    try:
-        context = {
-            'user': request.user,
-            'team_members': request.user.members.all() if hasattr(request.user, 'members') else []
-        }
-        return render(request, 'users/profile.html', context)
-    except Exception as e:
-        logger.error(f"Error in profile view: {str(e)}")
-        # For debugging only - remove in production
-        raise e
+    # Get all team members for the current user's team
+    team_members = TeamMember.objects.filter(team=request.user)
+    
+    return render(request, 'users/profile.html', {
+        'team_members': team_members
+    })
 
 @require_POST
 def roll_dice(request):

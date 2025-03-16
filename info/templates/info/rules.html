@@ -500,6 +500,25 @@ footer {
     document.body.classList.toggle("nav-open");
 }
 
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+        const navLinks = document.querySelector(".nav-links");
+        const burgerMenu = document.querySelector(".burger-menu");
+        
+        // If menu is open and click is outside menu and not on burger button
+        if (navLinks.classList.contains('show') && 
+            !navLinks.contains(e.target) && 
+            e.target !== burgerMenu) {
+            navLinks.classList.remove('show');
+            document.body.classList.remove("nav-open");
+        }
+    });
+
+    // Prevent clicks inside the menu from closing it
+    document.querySelector(".nav-links").addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+
         </script>
 </body>
 </html>

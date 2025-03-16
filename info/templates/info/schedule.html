@@ -648,39 +648,58 @@ z-index: 100;
     
     <script>
     function toggleMenu() {
-    const navLinks = document.querySelector(".nav-links");
-    navLinks.classList.toggle("show");
+        const navLinks = document.querySelector(".nav-links");
+        navLinks.classList.toggle("show");
     }
 
-        // Smooth Scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+        const navLinks = document.querySelector(".nav-links");
+        const burgerMenu = document.querySelector(".burger-menu");
+        
+        // If menu is open and click is outside menu and not on burger button
+        if (navLinks.classList.contains('show') && 
+            !navLinks.contains(e.target) && 
+            e.target !== burgerMenu) {
+            navLinks.classList.remove('show');
+        }
+    });
+
+    // Prevent clicks inside the menu from closing it
+    document.querySelector(".nav-links").addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+
+    // Smooth Scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
             });
         });
-document.addEventListener("DOMContentLoaded", function (){
-	const cards=document.querySelectorAll(".card");
-	const infoBox = document.getElementById("infoBox");
-	cards.forEach(card => {
-		card.addEventListener("mouseenter", (e) => {
-			const infoText = card.getAttribute("data-info");
-			infoBox.textContent = infoText;
-			infoBox.style.display = "block";
+    });
 
-			const rect = card.getBoundingClientRect();
-			infoBox.style.left = '${rect.left + window.scrollX}px';
-			infoBox.style.top = '${rect.top + window.scrollY-40}px';
-			
-});
+    document.addEventListener("DOMContentLoaded", function (){
+        const cards=document.querySelectorAll(".card");
+        const infoBox = document.getElementById("infoBox");
+        cards.forEach(card => {
+            card.addEventListener("mouseenter", (e) => {
+                const infoText = card.getAttribute("data-info");
+                infoBox.textContent = infoText;
+                infoBox.style.display = "block";
 
-		card.addEventListener("mouseleave", () => {
-			infoBox.style.display = "none";
-});
-});
-});
+                const rect = card.getBoundingClientRect();
+                infoBox.style.left = '${rect.left + window.scrollX}px';
+                infoBox.style.top = '${rect.top + window.scrollY-40}px';
+                
+            });
+
+            card.addEventListener("mouseleave", () => {
+                infoBox.style.display = "none";
+            });
+        });
+    });
     </script>
 </body>
 </html>

@@ -290,21 +290,27 @@
             .nav-links {
                 display: none;
                 flex-direction: column;
-                background: #222;
-                position: absolute;
-                top: 60px;
+                background: rgba(34, 34, 34, 0.95);
+                position: fixed;
+                top: 80px;
                 left: 0;
                 width: 100%;
-                padding: 10px 0;
+                padding: 20px 0;
                 text-align: center;
+                z-index: 1000;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             }
-
+            
             .nav-links.show {
                 display: flex;
             }
-
+            
             .burger-menu {
                 display: block;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
             }
         }
 
@@ -553,6 +559,113 @@
     font-size: 1.4rem;
 }
 
+/* Add these styles for better mobile display of crew members */
+@media (max-width: 768px) {
+    .crew-members {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .crew-member {
+        padding: 12px;
+        margin-bottom: 10px;
+    }
+    
+    .team-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .team-info h1 {
+        font-size: 2rem;
+    }
+    
+    .timeline-content {
+        width: calc(100% - 40px);
+        padding: 15px;
+    }
+    
+    .timeline::before {
+        left: 20px;
+        transform: none;
+    }
+    
+    .timeline-item {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 30px;
+    }
+    
+    .timeline-content.left, 
+    .timeline-content.right {
+        margin: 10px 0 !important;
+        text-align: left;
+        width: calc(100% - 40px);
+    }
+    
+    .timeline-content.left::before,
+    .timeline-content.right::before {
+        left: -40px !important;
+    }
+}
+
+/* Improve crew member display */
+.crew-members {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.crew-member {
+    background: rgba(30, 30, 30, 0.8);
+    border: 1px solid #FFD700;
+    border-radius: 10px;
+    padding: 15px;
+    transition: transform 0.3s ease;
+}
+
+.crew-member:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.crew-member h3 {
+    color: #FFD700;
+    margin: 0 0 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.crew-member p {
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.crew-member p i {
+    width: 20px;
+    text-align: center;
+    color: #FFD700;
+}
+
+.crew-member.captain {
+    border-width: 2px;
+    background: rgba(30, 30, 30, 0.9);
+}
+
+.empty-crew-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 20px;
+    background: rgba(30, 30, 30, 0.6);
+    border-radius: 10px;
+    color: #FFD700;
+}
+
     </style>
 </head>
 <body>
@@ -586,6 +699,49 @@
                     </div>
                 </div>
             </div>
+            
+            <h2><i class="fas fa-users"></i> Crew Members</h2>
+            
+            <div class="crew-members">
+                <!-- Display Team Leader -->
+                <div class="crew-member captain">
+                    <h3><i class="fas fa-crown"></i> Captain</h3>
+                    <p><i class="fas fa-user"></i> {{ user.team_leader|default:"Not specified" }}</p>
+                    <p><i class="fas fa-envelope"></i> {{ user.team_leader_email|default:"Not specified" }}</p>
+                    <p><i class="fas fa-phone"></i> {{ user.phone_number|default:"Not specified" }}</p>
+                </div>
+                
+                <!-- Display Team Members from TeamMember model -->
+                {% if team_members %}
+                    {% for member in team_members %}
+                        {% if member.name != user.team_leader %}
+                            <div class="crew-member">
+                                <h3><i class="fas fa-user-friends"></i> Crew Member</h3>
+                                <p><i class="fas fa-user"></i> {{ member.name|default:"Not specified" }}</p>
+                                <p><i class="fas fa-envelope"></i> {{ member.email|default:"Not specified" }}</p>
+                                <p><i class="fas fa-phone"></i> {{ member.phone|default:"Not specified" }}</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% elif user.member_names %}
+                    {% with names=user.member_names|split:"," emails=user.member_emails|split:"," phones=user.member_phones|split:"," %}
+                        {% for name in names %}
+                            {% if forloop.counter0 > 0 or name != user.team_leader %}
+                                <div class="crew-member">
+                                    <h3><i class="fas fa-user-friends"></i> Crew Member</h3>
+                                    <p><i class="fas fa-user"></i> {{ name|default:"Not specified" }}</p>
+                                    <p><i class="fas fa-envelope"></i> {{ emails|index:forloop.counter0|default:"Not specified" }}</p>
+                                    <p><i class="fas fa-phone"></i> {{ phones|index:forloop.counter0|default:"Not specified" }}</p>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endwith %}
+                {% else %}
+                    <div class="empty-crew-message">
+                        <p><i class="fas fa-info-circle"></i> No additional crew members registered</p>
+                    </div>
+                {% endif %}
+            </div>
 
             <div class="challenge-stats">
                 <div class="stat-card">
@@ -603,28 +759,6 @@
                     <h4>Treasure Found</h4>
                     <p>{{ user.challenges_solved|default:"0" }} Pieces</p>
                 </div>
-            </div>
-
-            <div class="crew-members">
-                <div class="crew-member">
-                    <h3><i class="fas fa-crown"></i> Captain</h3>
-                    <p><i class="fas fa-user"></i> {{ user.team_leader|default:"Not specified" }}</p>
-                    <p><i class="fas fa-envelope"></i> {{ user.team_leader_email|default:"Not specified" }}</p>
-                    <p><i class="fas fa-phone"></i> {{ user.phone_number|default:"Not specified" }}</p>
-                </div>
-
-                {% if user.member_names %}
-                    {% with names=user.member_names|split:"," emails=user.member_emails|split:"," phones=user.member_phones|split:"," %}
-                        {% for name in names %}
-                            <div class="crew-member">
-                                <h3><i class="fas fa-user-friends"></i> Crew Member</h3>
-                                <p><i class="fas fa-user"></i> {{ name|default:"Not specified" }}</p>
-                                <p><i class="fas fa-envelope"></i> {{ emails|index:forloop.counter0|default:"Not specified" }}</p>
-                                <p><i class="fas fa-phone"></i> {{ phones|index:forloop.counter0|default:"Not specified" }}</p>
-                            </div>
-                        {% endfor %}
-                    {% endwith %}
-                {% endif %}
             </div>
 
             <div class="timeline">
@@ -687,6 +821,24 @@
             const navLinks = document.querySelector(".nav-links");
             navLinks.classList.toggle("show");
         }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const navLinks = document.querySelector(".nav-links");
+            const burgerMenu = document.querySelector(".burger-menu");
+            
+            // If menu is open and click is outside menu and not on burger button
+            if (navLinks.classList.contains('show') && 
+                !navLinks.contains(e.target) && 
+                e.target !== burgerMenu) {
+                navLinks.classList.remove('show');
+            }
+        });
+
+        // Prevent clicks inside the menu from closing it
+        document.querySelector(".nav-links").addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
 
         // Add animation delay to timeline items
         document.addEventListener('DOMContentLoaded', function() {

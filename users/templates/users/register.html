@@ -1680,6 +1680,7 @@ footer {
                 const count = this.dataset.members;
                 membersCountInput.value = count;
                 updateMemberFields(parseInt(count));
+                validateForm(); // Re-validate after changing member count
             });
         });
 
@@ -1699,17 +1700,26 @@ footer {
                         <div class="input-container">
                             <i class="fas fa-user input-icon"></i>
                             <input type="text" name="member_name_${i}" placeholder="Member ${i + 1} Name" required>
+                            <span class="error-message"></span>
                         </div>
                         <div class="input-container">
                             <i class="fas fa-envelope input-icon"></i>
                             <input type="email" name="member_email_${i}" placeholder="Member ${i + 1} Email" required>
+                            <span class="error-message"></span>
                         </div>
                         <div class="input-container">
                             <i class="fas fa-phone input-icon"></i>
                             <input type="tel" name="member_phone_${i}" placeholder="Member ${i + 1} Phone" pattern="[0-9]{10}" required>
+                            <span class="error-message"></span>
                         </div>
                     </div>`;
             }
+            
+            // Add event listeners to new inputs
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', validateForm);
+                input.addEventListener('blur', validateForm);
+            });
         }
 
         // Professional/Student toggle animation
@@ -1725,6 +1735,8 @@ footer {
                 studentIcon.style.opacity = '1';
                 professionalIcon.style.opacity = '0.5';
             }
+            
+            validateForm(); // Re-validate after changing professional status
         });
 
         // Update the registration type toggle code
@@ -1741,8 +1753,10 @@ footer {
                     updateMemberFields(1);
                 } else {
                     teamSizeContainer.style.display = 'block';
-                    updateMemberFields(2); // Default to 2 members when team is selected
+                    updateMemberFields(parseInt(membersCountInput.value) || 2); // Use current value or default to 2
                 }
+                
+                validateForm(); // Re-validate after changing registration type
             });
         });
 
@@ -1751,7 +1765,8 @@ footer {
         updateMemberFields(1);
 
         // Add fun fact dialog functionality
-        document.getElementById('securitySection').addEventListener('click', function() {
+        const securitySection = document.querySelector('.section-divider');
+        securitySection.addEventListener('click', function() {
             const funFactDialog = document.getElementById('funFactDialog');
             const randomFacts = [
                 "The first computer virus was created in 1986 and was called 'Brain'.",
@@ -1786,12 +1801,12 @@ footer {
     </script>
     <script>
      function toggleMenu() {
-    const navLinks = document.querySelector(".nav-links");
-    navLinks.classList.toggle("show");
-    }
+        const navLinks = document.querySelector(".nav-links");
+        navLinks.classList.toggle("show");
+     }
     </script>
     <script>
-        // Add these new functions
+        // Improved validation functions
         function validateEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
@@ -1834,10 +1849,10 @@ footer {
             const password = document.getElementById('password');
             const confirmPassword = document.getElementById('confirm_password');
 
-            if (password.value !== confirmPassword.value) {
+            if (password.value && confirmPassword.value && password.value !== confirmPassword.value) {
                 [password, confirmPassword].forEach(input => {
                     input.classList.add('validation-error');
-                    const errorMessage = input.parentElement.querySelector('.error-message');
+                    const errorMessage = input.parentElement.querySelector('.error-message') || createErrorMessage(input.parentElement);
                     errorMessage.textContent = 'Passwords do not match';
                     errorMessage.classList.add('show');
                 });
@@ -1869,10 +1884,15 @@ footer {
             }
         });
 
-        // Add input event listeners
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', validateForm);
-            input.addEventListener('blur', validateForm);
+        // Add input event listeners to all inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', validateForm);
+                input.addEventListener('blur', validateForm);
+            });
+            
+            // Initial validation
+            validateForm();
         });
 
         // Close error modal when clicking outside
@@ -1882,26 +1902,82 @@ footer {
                 errorModal.style.display = 'none';
             }
         });
-
-        // Initial validation
-        document.addEventListener('DOMContentLoaded', validateForm);
     </script>
     <script>
-    // Update the form submission
+    // Update the form submission to ensure all data is captured
     document.getElementById('registrationForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        // Submit the form normally first
-        const form = this;
-        form.submit(); // This will handle the normal database operations
-
-        // Show WhatsApp dialog as an optional overlay
+        // Validate the form before submission
+        if (!validateForm()) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ensure all member data is included in the form
+        const regType = document.querySelector('.reg-option.selected').dataset.type;
+        const memberCount = regType === 'individual' ? 1 : parseInt(document.getElementById('members_count').value);
+        
+        // Create hidden fields to store member data in CSV format for the database
+        let memberNames = [];
+        let memberEmails = [];
+        let memberPhones = [];
+        
+        // Make sure all member fields are properly named and included
+        for (let i = 0; i < memberCount; i++) {
+            const nameInput = document.querySelector(`input[name="member_name_${i}"]`);
+            const emailInput = document.querySelector(`input[name="member_email_${i}"]`);
+            const phoneInput = document.querySelector(`input[name="member_phone_${i}"]`);
+            
+            if (!nameInput || !nameInput.value || 
+                !emailInput || !emailInput.value || 
+                !phoneInput || !phoneInput.value) {
+                e.preventDefault();
+                alert(`Please fill in all details for Team Member ${i+1}`);
+                return false;
+            }
+            
+            // Add to arrays for CSV storage
+            memberNames.push(nameInput.value);
+            memberEmails.push(emailInput.value);
+            memberPhones.push(phoneInput.value);
+        }
+        
+        // Create hidden fields to store the CSV data
+        if (!document.querySelector('input[name="member_names"]')) {
+            const namesInput = document.createElement('input');
+            namesInput.type = 'hidden';
+            namesInput.name = 'member_names';
+            namesInput.value = memberNames.join(',');
+            this.appendChild(namesInput);
+            
+            const emailsInput = document.createElement('input');
+            emailsInput.type = 'hidden';
+            emailsInput.name = 'member_emails';
+            emailsInput.value = memberEmails.join(',');
+            this.appendChild(emailsInput);
+            
+            const phonesInput = document.createElement('input');
+            phonesInput.type = 'hidden';
+            phonesInput.name = 'member_phones';
+            phonesInput.value = memberPhones.join(',');
+            this.appendChild(phonesInput);
+        } else {
+            // Update existing hidden fields
+            document.querySelector('input[name="member_names"]').value = memberNames.join(',');
+            document.querySelector('input[name="member_emails"]').value = memberEmails.join(',');
+            document.querySelector('input[name="member_phones"]').value = memberPhones.join(',');
+        }
+        
+        // Check for duplicate emails to prevent database errors
+        const uniqueEmails = new Set(memberEmails);
+        if (uniqueEmails.size !== memberEmails.length) {
+            e.preventDefault();
+            alert('Each team member must have a unique email address');
+            return false;
+        }
+        
+        // Continue with form submission
+        // Show WhatsApp dialog after form submission
         document.getElementById('whatsapp-dialog').style.display = 'block';
-
-        // Show ship animation after WhatsApp dialog is closed
-        document.querySelector('.close-btn').addEventListener('click', function() {
-            closeDialog();
-        });
     });
 
     // Show ship animation below WhatsApp dialog if it's open
