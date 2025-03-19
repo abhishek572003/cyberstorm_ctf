@@ -31,7 +31,9 @@ def register(request):
     if request.method == 'POST':
         try:
             # Get form data
-            team_name = request.POST.get('team_name')
+            team_name_input = request.POST.get('team_name')
+            team_name_stripped = team_name_input.strip();
+            team_name = team_name_stripped.lower();
             password = request.POST.get('password')
             confirm_password = request.POST.get('confirm_password')
             
@@ -99,7 +101,9 @@ def register(request):
 
 def login_view(request):
     if request.method == "POST":
-        team_name = request.POST["team_name"]
+        team_name_input = request.POST["team_name"]
+        team_name_stripped = team_name_input.strip()
+        team_name = team_name_stripped.lower()
         password = request.POST["password"]
 
         team = authenticate(request, username=team_name, password=password)
@@ -170,7 +174,9 @@ def password_reset(request):
     context = get_base_context()
     
     if request.method == 'POST':
-        team_name = request.POST.get('team_name')
+        team_name_input = request.POST.get('team_name')
+        team_name_stripped = team_name_input.strip()
+        team_name = team_name_stripped.lower()
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         new_password = request.POST.get('new_password')
