@@ -641,6 +641,35 @@ text-decoration: none;
 }
 
     </style>
+	<style>
+        .card-container-community {
+            display: flex;
+            gap: 20px; /* Space between cards */
+            flex-wrap: wrap; /* Ensures responsiveness */
+            justify-content: center; /* Center aligns the cards */
+        }
+        .card-community {
+            width: calc(33.33% - 20px); /* 3 cards per row */
+            min-width: 250px; /* Prevents cards from becoming too small */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .card-community {
+                width: calc(50% - 20px); /* 2 cards per row */
+            }
+        }
+        @media (max-width: 600px) {
+            .card-community {
+                width: 100%; /* 1 card per row */
+            }
+        }
+    </style>
 </head>
 <body>
     {% block content %}
@@ -845,7 +874,10 @@ With a global network of partner institutions and a student-first approach, Glob
                   </div>
                 
             </div>
-        </div>
+        </div><br><br><br>
+	    <div class="card-container-community">
+        <div class="card-community">Card 1</div>
+    </div>
         <br><br><br><br><br><br>
     </section>
     <footer>
