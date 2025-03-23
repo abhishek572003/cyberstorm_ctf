@@ -120,14 +120,17 @@ def logout_view(request):
     logout(request)
     return redirect("login")
 
+
+logger = logging.getLogger(__name__)
 @login_required
 def profile(request):
-    # Ensure request.user is a Team instance
     try:
-        team = Team.objects.get(team_name=request.user.team_name)  # Fetch explicitly
+        team = Team.objects.get(team_name=request.user.team_name)
         team_members = TeamMember.objects.filter(team=team)
+        logger.info(f"Team Members Retrieved: {list(team_members.values('name', 'email'))}")  # Log output
     except Team.DoesNotExist:
-        team_members = TeamMember.objects.none()  # No team, return empty list
+        team_members = TeamMember.objects.none()
+        logger.warning("Team not found for user.")
 
     return render(request, 'users/profile.html', {
         'team_members': team_members
