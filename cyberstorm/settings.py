@@ -14,8 +14,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure--w!_tfqpzgvm!ccha+_jm!=5mkllgb(d#06_y=jt3y(^6(tu!='
 
-# Set DEBUG to False for production
-DEBUG = False
+# Set DEBUG to True in development, False in production
+DEBUG = True  # Only during development!
 
 # Allowed hosts
 ALLOWED_HOSTS = [
@@ -41,7 +41,7 @@ DATABASES = {
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Media files settings (Images, uploads)
 MEDIA_URL = '/media/'
@@ -58,19 +58,19 @@ INSTALLED_APPS = [
     'users',
     'info',
     'django.contrib.sitemaps',
-    'whitenoise.runserver_nostatic',
 ]
 
 # Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'cyberstorm.middleware.MaintenanceMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 # URL configuration
@@ -88,8 +88,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.media',
-                'django.template.context_processors.static',
             ],
         },
     },
@@ -190,7 +188,7 @@ CONTACT_EMAIL = "gdgsiesgst@gmail.com"
 CC_EMAIL = "gdgoncampus@sies.edu.in"
 
 # WhatsApp Configuration
-WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/H6qbjvaySMA2h8BqojwNC3"
+WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/CWmRIxITylRKbBkDzjrhfD"
 WHATSAPP_FOOTER_NUMBER = "919152375564"
 WHATSAPP_FOOTER_TEXT = "Hi!%20I%20want%20to%20know%20more%20about%20Cyberstorm"
 WHATSAPP_SPONSOR_NUMBER = "919152375564"
@@ -206,13 +204,5 @@ SITE_META = {
     'TWITTER_HANDLE': '@gdgsiesgst',
 }
 
-# Security settings for production
-SECURE_HSTS_SECONDS = 31536000  # 1 year
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
-SECURE_SSL_REDIRECT = True  # Set to True if you have SSL configured
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
+# Add this near the top with other settings
+MAINTENANCE_MODE = True  # Toggle this to True/False to enable/disable maintenance mode

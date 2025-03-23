@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Under Maintenance - Cyber Pirates</title>
+    <link rel="stylesheet" href="maintenance.css">
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+<body>
+    <div class="maintenance-wrapper">
+        <div class="settings-toggle">
+            <label class="switch">
+                <input type="checkbox" id="maintenanceToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+        
+        <div class="maintenance-content" id="maintenanceContent">
+            <div class="glitch-container">
+                <h1 class="glitch" data-text="SYSTEM MAINTENANCE">SYSTEM MAINTENANCE</h1>
+            </div>
+            
+            <div class="pirate-logo">
+                <img src="/static/images/cyberlogo.jpg" alt="Pirate Logo" class="floating">
+            </div>
+            
+            <div class="cyber-text">
+                <p class="typing-text">CYBER_STORM_CTF_PROTOCOL_INITIATED...</p>
+                <p class="binary-overlay">01001100 01001111 01000001 01000100 01001001 01001110 01000111</p>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+            
+            <div class="message-container">
+                <p class="message">Our crew is working hard to enhance your experience!</p>
+                <p class="sub-message">Expected return time: <span class="countdown">00:00:00</span></p>
+            </div>
+        </div>
+
+        <div class="default-content" id="defaultContent" style="display: none;">
+            <!-- Your regular website content goes here -->
+            <h1>Welcome to Cyber Pirates!</h1>
+        </div>
+    </div>
+
+    <script>
+        const maintenanceToggle = document.getElementById('maintenanceToggle');
+        const maintenanceContent = document.getElementById('maintenanceContent');
+        const defaultContent = document.getElementById('defaultContent');
+
+        // Check localStorage for saved preference
+        const showMaintenance = localStorage.getItem('showMaintenance') !== 'false';
+        maintenanceToggle.checked = showMaintenance;
+        maintenanceContent.style.display = showMaintenance ? 'block' : 'none';
+        defaultContent.style.display = showMaintenance ? 'none' : 'block';
+
+        maintenanceToggle.addEventListener('change', (e) => {
+            const showMaintenance = e.target.checked;
+            maintenanceContent.style.display = showMaintenance ? 'block' : 'none';
+            defaultContent.style.display = showMaintenance ? 'none' : 'block';
+            localStorage.setItem('showMaintenance', showMaintenance);
+        });
+
+        // Countdown Timer
+        function updateCountdown() {
+            const now = new Date();
+            const target = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 hours from now
+            const diff = target - now;
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.querySelector('.countdown').textContent = 
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html> 
