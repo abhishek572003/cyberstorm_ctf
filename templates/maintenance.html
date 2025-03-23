@@ -13,11 +13,206 @@
             --bg-dark: #0a0a0a;
         }
 
-        /* Copy all your CSS from maintenance.css here */
-        /* ... */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--cyber-blue);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .maintenance-wrapper {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .maintenance-content {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .glitch-container {
+            margin-bottom: 40px;
+        }
+
+        .glitch {
+            font-size: 3em;
+            font-weight: bold;
+            text-transform: uppercase;
+            position: relative;
+            text-shadow: 0.05em 0 0 var(--cyber-pink),
+                         -0.05em -0.025em 0 var(--cyber-yellow);
+            animation: glitch 725ms infinite;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 var(--cyber-pink), -0.05em -0.025em 0 var(--cyber-yellow); }
+            15% { text-shadow: -0.05em -0.025em 0 var(--cyber-pink), 0.025em 0.025em 0 var(--cyber-yellow); }
+            49% { text-shadow: -0.05em -0.025em 0 var(--cyber-pink), 0.025em 0.025em 0 var(--cyber-yellow); }
+            50% { text-shadow: 0.025em 0.05em 0 var(--cyber-pink), 0.05em 0 0 var(--cyber-yellow); }
+            99% { text-shadow: 0.025em 0.05em 0 var(--cyber-pink), 0.05em 0 0 var(--cyber-yellow); }
+            100% { text-shadow: -0.025em 0 0 var(--cyber-pink), -0.025em -0.025em 0 var(--cyber-yellow); }
+        }
+
+        .pirate-logo {
+            margin: 30px 0;
+        }
+
+        .pirate-logo img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .cyber-text {
+            margin: 30px 0;
+        }
+
+        .typing-text {
+            font-size: 1.2em;
+            border-right: 2px solid var(--cyber-blue);
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 3.5s steps(40, end),
+                       blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--cyber-blue) }
+        }
+
+        .binary-overlay {
+            font-size: 0.8em;
+            opacity: 0.5;
+            animation: fade 2s infinite;
+        }
+
+        @keyframes fade {
+            0%, 100% { opacity: 0.5 }
+            50% { opacity: 0.8 }
+        }
+
+        .progress-bar {
+            width: 80%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--cyber-blue);
+            margin: 30px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: var(--cyber-blue);
+            position: absolute;
+            animation: progress 3s ease-in-out infinite;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        .message-container {
+            margin-top: 30px;
+        }
+
+        .message {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .sub-message {
+            font-size: 1.2em;
+            color: var(--cyber-pink);
+        }
+
+        .countdown {
+            font-weight: bold;
+            color: var(--cyber-yellow);
+        }
+
+        @media (max-width: 768px) {
+            .glitch { font-size: 2em; }
+            .typing-text { font-size: 1em; }
+            .message { font-size: 1.2em; }
+            .sub-message { font-size: 1em; }
+            .progress-bar { width: 90%; }
+        }
+
+        @media (max-width: 480px) {
+            .glitch { font-size: 1.5em; }
+            .maintenance-content { padding: 10px; }
+        }
     </style>
 </head>
 <body>
-    <!-- Your existing maintenance page HTML -->
+    <div class="maintenance-wrapper">
+        <div class="maintenance-content">
+            <div class="glitch-container">
+                <h1 class="glitch" data-text="SYSTEM MAINTENANCE">SYSTEM MAINTENANCE</h1>
+            </div>
+            
+            <div class="pirate-logo">
+                <img src="/static/images/cyberlogo.jpg" alt="Pirate Logo" class="floating">
+            </div>
+            
+            <div class="cyber-text">
+                <p class="typing-text">CYBER_STORM_CTF_PROTOCOL_INITIATED...</p>
+                <p class="binary-overlay">01001100 01001111 01000001 01000100 01001001 01001110 01000111</p>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+            
+            <div class="message-container">
+                <p class="message">Our crew is working hard to enhance your experience!</p>
+                <p class="sub-message">Expected return time: <span class="countdown">00:00:00</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateCountdown() {
+            const now = new Date();
+            const target = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+            const diff = target - now;
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.querySelector('.countdown').textContent = 
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
 </body>
 </html>
