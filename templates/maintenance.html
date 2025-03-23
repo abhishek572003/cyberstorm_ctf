@@ -277,11 +277,128 @@
             opacity: 0.1;
             pointer-events: none;
         }
+
+        /* Add electric border effect */
+        .maintenance-content {
+            border: 2px solid var(--cyber-blue);
+            box-shadow: 0 0 15px var(--cyber-blue);
+            padding: 40px;
+            position: relative;
+            animation: borderPulse 1.5s infinite;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        @keyframes borderPulse {
+            0% { box-shadow: 0 0 15px var(--cyber-blue); }
+            50% { box-shadow: 0 0 30px var(--cyber-pink), 0 0 50px var(--cyber-yellow); }
+            100% { box-shadow: 0 0 15px var(--cyber-blue); }
+        }
+
+        /* Add floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Add cyber circuit lines */
+        .circuit-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, var(--cyber-blue) 1px, transparent 1px) 0 0,
+                linear-gradient(0deg, var(--cyber-blue) 1px, transparent 1px) 0 0;
+            background-size: 50px 50px;
+            opacity: 0.1;
+            animation: circuitMove 20s linear infinite;
+        }
+
+        @keyframes circuitMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Enhanced text effects */
+        .message, .sub-message {
+            text-shadow: 0 0 10px var(--cyber-blue),
+                        0 0 20px var(--cyber-pink),
+                        0 0 30px var(--cyber-yellow);
+            animation: textPulse 2s infinite;
+        }
+
+        @keyframes textPulse {
+            0% { text-shadow: 0 0 10px var(--cyber-blue); }
+            50% { text-shadow: 0 0 20px var(--cyber-pink), 0 0 30px var(--cyber-yellow); }
+            100% { text-shadow: 0 0 10px var(--cyber-blue); }
+        }
+
+        /* Add rotating gear animation */
+        .gear {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 3px solid var(--cyber-blue);
+            border-radius: 50%;
+            animation: rotate 10s linear infinite;
+        }
+
+        .gear::before {
+            content: '⚙️';
+            font-size: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .gear-1 { top: 20px; left: 20px; animation-duration: 10s; }
+        .gear-2 { bottom: 20px; right: 20px; animation-duration: 8s; animation-direction: reverse; }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Add glowing dots */
+        .cyber-dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .cyber-dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--cyber-blue);
+            border-radius: 50%;
+            animation: dotPulse 2s infinite;
+        }
+
+        @keyframes dotPulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(2); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
     </style>
 </head>
 <body>
     <canvas id="matrix" class="matrix-bg"></canvas>
     <div class="maintenance-wrapper">
+        <div class="circuit-lines"></div>
+        <div class="particles"></div>
+        <div class="cyber-dots"></div>
+        <div class="gear gear-1"></div>
+        <div class="gear gear-2"></div>
         <div class="maintenance-content">
             <div class="glitch-container">
                 <h1 class="glitch" data-text="SYSTEM MAINTENANCE">SYSTEM MAINTENANCE</h1>
@@ -356,6 +473,69 @@
                 rainDrops[i]++;
             }
         }
+
+        // Create floating particles
+        function createParticles() {
+            const particles = document.querySelector('.particles');
+            for(let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.cssText = `
+                    position: absolute;
+                    width: ${Math.random() * 5}px;
+                    height: ${Math.random() * 5}px;
+                    background: ${Math.random() > 0.5 ? 'var(--cyber-pink)' : 'var(--cyber-blue)'};
+                    left: ${Math.random() * 100}vw;
+                    top: ${Math.random() * 100}vh;
+                    opacity: ${Math.random()};
+                    animation: float ${5 + Math.random() * 10}s linear infinite;
+                `;
+                particles.appendChild(particle);
+            }
+        }
+
+        // Create cyber dots
+        function createCyberDots() {
+            const dotsContainer = document.querySelector('.cyber-dots');
+            for(let i = 0; i < 30; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'cyber-dot';
+                dot.style.cssText = `
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    animation-delay: ${Math.random() * 2}s;
+                `;
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        // Initialize effects
+        createParticles();
+        createCyberDots();
+
+        // Add mouse trail effect
+        document.addEventListener('mousemove', (e) => {
+            const trail = document.createElement('div');
+            trail.className = 'mouse-trail';
+            trail.style.cssText = `
+                position: fixed;
+                width: 10px;
+                height: 10px;
+                background: var(--cyber-blue);
+                border-radius: 50%;
+                left: ${e.clientX}px;
+                top: ${e.clientY}px;
+                pointer-events: none;
+                opacity: 0.8;
+                transition: all 0.5s ease;
+            `;
+            document.body.appendChild(trail);
+            setTimeout(() => {
+                trail.style.opacity = '0';
+                trail.style.transform = 'scale(3)';
+                setTimeout(() => trail.remove(), 500);
+            }, 10);
+        });
 
         setInterval(draw, 30);
         setInterval(updateCountdown, 1000);

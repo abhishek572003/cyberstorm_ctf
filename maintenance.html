@@ -4,83 +4,548 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Under Maintenance - Cyber Pirates</title>
-    <link rel="stylesheet" href="maintenance.css">
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        :root {
+            --cyber-blue: #00ff9d;
+            --cyber-pink: #ff00ff;
+            --cyber-yellow: #ffff00;
+            --bg-dark: #0a0a0a;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--cyber-blue);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .maintenance-wrapper {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .maintenance-content {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .glitch-container {
+            margin-bottom: 40px;
+        }
+
+        .glitch {
+            font-size: 3em;
+            font-weight: bold;
+            text-transform: uppercase;
+            position: relative;
+            text-shadow: 0.05em 0 0 var(--cyber-pink),
+                         -0.05em -0.025em 0 var(--cyber-yellow);
+            animation: glitch 725ms infinite;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 var(--cyber-pink), -0.05em -0.025em 0 var(--cyber-yellow); }
+            15% { text-shadow: -0.05em -0.025em 0 var(--cyber-pink), 0.025em 0.025em 0 var(--cyber-yellow); }
+            49% { text-shadow: -0.05em -0.025em 0 var(--cyber-pink), 0.025em 0.025em 0 var(--cyber-yellow); }
+            50% { text-shadow: 0.025em 0.05em 0 var(--cyber-pink), 0.05em 0 0 var(--cyber-yellow); }
+            99% { text-shadow: 0.025em 0.05em 0 var(--cyber-pink), 0.05em 0 0 var(--cyber-yellow); }
+            100% { text-shadow: -0.025em 0 0 var(--cyber-pink), -0.025em -0.025em 0 var(--cyber-yellow); }
+        }
+
+        .pirate-logo {
+            margin: 30px 0;
+        }
+
+        .pirate-logo img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .cyber-text {
+            margin: 30px 0;
+        }
+
+        .typing-text {
+            font-size: 1.2em;
+            border-right: 2px solid var(--cyber-blue);
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 3.5s steps(40, end),
+                       blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--cyber-blue) }
+        }
+
+        .binary-overlay {
+            font-size: 0.8em;
+            opacity: 0.5;
+            animation: fade 2s infinite;
+        }
+
+        @keyframes fade {
+            0%, 100% { opacity: 0.5 }
+            50% { opacity: 0.8 }
+        }
+
+        .progress-bar {
+            width: 80%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--cyber-blue);
+            margin: 30px auto;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 10px var(--cyber-blue),
+                        0 0 20px var(--cyber-blue),
+                        0 0 30px var(--cyber-blue);
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: var(--cyber-blue);
+            position: absolute;
+            animation: progress 3s ease-in-out infinite;
+            box-shadow: 0 0 15px var(--cyber-blue),
+                        0 0 25px var(--cyber-blue);
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        .message-container {
+            margin-top: 30px;
+        }
+
+        .message {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .sub-message {
+            font-size: 1.2em;
+            color: var(--cyber-pink);
+        }
+
+        .countdown {
+            font-weight: bold;
+            color: var(--cyber-yellow);
+        }
+
+        @media (max-width: 768px) {
+            .glitch { font-size: 2em; }
+            .typing-text { font-size: 1em; }
+            .message { font-size: 1.2em; }
+            .sub-message { font-size: 1em; }
+            .progress-bar { width: 90%; }
+        }
+
+        @media (max-width: 480px) {
+            .glitch { font-size: 1.5em; }
+            .maintenance-content { padding: 10px; }
+        }
+
+        /* Add cyberpunk background animation */
+        .maintenance-wrapper::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg,
+                rgba(0, 255, 157, 0.1) 25%,
+                rgba(255, 0, 255, 0.1) 50%,
+                rgba(255, 255, 0, 0.1) 75%);
+            animation: cyber-bg 10s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes cyber-bg {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 400% 400%; }
+        }
+
+        /* Add scanline effect */
+        .maintenance-wrapper::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15) 0px,
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            animation: scanline 10s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); }
+        }
+
+        /* Enhanced glitch effect */
+        .glitch {
+            position: relative;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--cyber-pink);
+            animation: glitch-1 2s infinite linear alternate-reverse;
+            clip: rect(44px, 450px, 56px, 0);
+        }
+
+        .glitch::after {
+            left: -2px;
+            text-shadow: 2px 0 var(--cyber-yellow);
+            animation: glitch-2 1s infinite linear alternate-reverse;
+            clip: rect(44px, 450px, 56px, 0);
+        }
+
+        @keyframes glitch-1 {
+            0% { clip: rect(20px, 450px, 30px, 0); }
+            20% { clip: rect(40px, 450px, 50px, 0); }
+            40% { clip: rect(60px, 450px, 70px, 0); }
+            60% { clip: rect(80px, 450px, 90px, 0); }
+            80% { clip: rect(100px, 450px, 110px, 0); }
+            100% { clip: rect(120px, 450px, 130px, 0); }
+        }
+
+        @keyframes glitch-2 {
+            0% { clip: rect(120px, 450px, 130px, 0); }
+            20% { clip: rect(100px, 450px, 110px, 0); }
+            40% { clip: rect(80px, 450px, 90px, 0); }
+            60% { clip: rect(60px, 450px, 70px, 0); }
+            80% { clip: rect(40px, 450px, 50px, 0); }
+            100% { clip: rect(20px, 450px, 30px, 0); }
+        }
+
+        /* Add matrix rain effect */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        /* Add electric border effect */
+        .maintenance-content {
+            border: 2px solid var(--cyber-blue);
+            box-shadow: 0 0 15px var(--cyber-blue);
+            padding: 40px;
+            position: relative;
+            animation: borderPulse 1.5s infinite;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        @keyframes borderPulse {
+            0% { box-shadow: 0 0 15px var(--cyber-blue); }
+            50% { box-shadow: 0 0 30px var(--cyber-pink), 0 0 50px var(--cyber-yellow); }
+            100% { box-shadow: 0 0 15px var(--cyber-blue); }
+        }
+
+        /* Add floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Add cyber circuit lines */
+        .circuit-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(90deg, var(--cyber-blue) 1px, transparent 1px) 0 0,
+                linear-gradient(0deg, var(--cyber-blue) 1px, transparent 1px) 0 0;
+            background-size: 50px 50px;
+            opacity: 0.1;
+            animation: circuitMove 20s linear infinite;
+        }
+
+        @keyframes circuitMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Enhanced text effects */
+        .message, .sub-message {
+            text-shadow: 0 0 10px var(--cyber-blue),
+                        0 0 20px var(--cyber-pink),
+                        0 0 30px var(--cyber-yellow);
+            animation: textPulse 2s infinite;
+        }
+
+        @keyframes textPulse {
+            0% { text-shadow: 0 0 10px var(--cyber-blue); }
+            50% { text-shadow: 0 0 20px var(--cyber-pink), 0 0 30px var(--cyber-yellow); }
+            100% { text-shadow: 0 0 10px var(--cyber-blue); }
+        }
+
+        /* Add rotating gear animation */
+        .gear {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 3px solid var(--cyber-blue);
+            border-radius: 50%;
+            animation: rotate 10s linear infinite;
+        }
+
+        .gear::before {
+            content: '⚙️';
+            font-size: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .gear-1 { top: 20px; left: 20px; animation-duration: 10s; }
+        .gear-2 { bottom: 20px; right: 20px; animation-duration: 8s; animation-direction: reverse; }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Add glowing dots */
+        .cyber-dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .cyber-dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--cyber-blue);
+            border-radius: 50%;
+            animation: dotPulse 2s infinite;
+        }
+
+        @keyframes dotPulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(2); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
 </head>
 <body>
+    <canvas id="matrix" class="matrix-bg"></canvas>
     <div class="maintenance-wrapper">
-        <div class="settings-toggle">
-            <label class="switch">
-                <input type="checkbox" id="maintenanceToggle">
-                <span class="slider"></span>
-            </label>
-        </div>
-        
-        <div class="maintenance-content" id="maintenanceContent">
+        <div class="circuit-lines"></div>
+        <div class="particles"></div>
+        <div class="cyber-dots"></div>
+        <div class="gear gear-1"></div>
+        <div class="gear gear-2"></div>
+        <div class="maintenance-content">
             <div class="glitch-container">
                 <h1 class="glitch" data-text="SYSTEM MAINTENANCE">SYSTEM MAINTENANCE</h1>
             </div>
-            
+
             <div class="pirate-logo">
-                <img src="/static/images/skull.png" alt="Pirate Logo" class="floating">
+                <img src="/static/images/cyberlogo.jpg" alt="Pirate Logo" class="floating">
             </div>
-            
+
             <div class="cyber-text">
                 <p class="typing-text">CYBER_STORM_CTF_PROTOCOL_INITIATED...</p>
                 <p class="binary-overlay">01001100 01001111 01000001 01000100 01001001 01001110 01000111</p>
             </div>
-            
+
             <div class="progress-bar">
                 <div class="progress"></div>
             </div>
-            
+
             <div class="message-container">
                 <p class="message">Our crew is working hard to enhance your experience!</p>
                 <p class="sub-message">Expected return time: <span class="countdown">00:00:00</span></p>
             </div>
         </div>
-
-        <div class="default-content" id="defaultContent" style="display: none;">
-            <!-- Your regular website content goes here -->
-            <h1>Welcome to Cyber Pirates!</h1>
-        </div>
     </div>
 
     <script>
-        const maintenanceToggle = document.getElementById('maintenanceToggle');
-        const maintenanceContent = document.getElementById('maintenanceContent');
-        const defaultContent = document.getElementById('defaultContent');
-
-        // Check localStorage for saved preference
-        const showMaintenance = localStorage.getItem('showMaintenance') !== 'false';
-        maintenanceToggle.checked = showMaintenance;
-        maintenanceContent.style.display = showMaintenance ? 'block' : 'none';
-        defaultContent.style.display = showMaintenance ? 'none' : 'block';
-
-        maintenanceToggle.addEventListener('change', (e) => {
-            const showMaintenance = e.target.checked;
-            maintenanceContent.style.display = showMaintenance ? 'block' : 'none';
-            defaultContent.style.display = showMaintenance ? 'none' : 'block';
-            localStorage.setItem('showMaintenance', showMaintenance);
-        });
-
-        // Countdown Timer
+        // Update countdown to 1 hour
         function updateCountdown() {
             const now = new Date();
-            const target = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 hours from now
+            const target = new Date(now.getTime() + 60 * 60 * 1000); // 1 hour from now
             const diff = target - now;
-            
+
             const hours = Math.floor(diff / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            document.querySelector('.countdown').textContent = 
+
+            document.querySelector('.countdown').textContent =
                 `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
         }
 
+        // Matrix rain effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const alphabet = katakana + latin + nums;
+
+        const fontSize = 16;
+        const columns = canvas.width/fontSize;
+
+        const rainDrops = Array(Math.floor(columns)).fill(1);
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+
+            for(let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i*fontSize, rainDrops[i]*fontSize);
+
+                if(rainDrops[i]*fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        }
+
+        // Create floating particles
+        function createParticles() {
+            const particles = document.querySelector('.particles');
+            for(let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.cssText = `
+                    position: absolute;
+                    width: ${Math.random() * 5}px;
+                    height: ${Math.random() * 5}px;
+                    background: ${Math.random() > 0.5 ? 'var(--cyber-pink)' : 'var(--cyber-blue)'};
+                    left: ${Math.random() * 100}vw;
+                    top: ${Math.random() * 100}vh;
+                    opacity: ${Math.random()};
+                    animation: float ${5 + Math.random() * 10}s linear infinite;
+                `;
+                particles.appendChild(particle);
+            }
+        }
+
+        // Create cyber dots
+        function createCyberDots() {
+            const dotsContainer = document.querySelector('.cyber-dots');
+            for(let i = 0; i < 30; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'cyber-dot';
+                dot.style.cssText = `
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    animation-delay: ${Math.random() * 2}s;
+                `;
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        // Initialize effects
+        createParticles();
+        createCyberDots();
+
+        // Add mouse trail effect
+        document.addEventListener('mousemove', (e) => {
+            const trail = document.createElement('div');
+            trail.className = 'mouse-trail';
+            trail.style.cssText = `
+                position: fixed;
+                width: 10px;
+                height: 10px;
+                background: var(--cyber-blue);
+                border-radius: 50%;
+                left: ${e.clientX}px;
+                top: ${e.clientY}px;
+                pointer-events: none;
+                opacity: 0.8;
+                transition: all 0.5s ease;
+            `;
+            document.body.appendChild(trail);
+            setTimeout(() => {
+                trail.style.opacity = '0';
+                trail.style.transform = 'scale(3)';
+                setTimeout(() => trail.remove(), 500);
+            }, 10);
+        });
+
+        setInterval(draw, 30);
         setInterval(updateCountdown, 1000);
         updateCountdown();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
-</html> 
+</html>
