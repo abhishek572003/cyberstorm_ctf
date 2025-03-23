@@ -122,9 +122,13 @@ def logout_view(request):
 
 @login_required
 def profile(request):
-    # Get all team members for the current user's team
-    team_members = TeamMember.objects.filter(team=request.user)
-    
+    # Ensure request.user is a Team instance
+    try:
+        team = Team.objects.get(team_name=request.user.team_name)  # Fetch explicitly
+        team_members = TeamMember.objects.filter(team=team)
+    except Team.DoesNotExist:
+        team_members = TeamMember.objects.none()  # No team, return empty list
+
     return render(request, 'users/profile.html', {
         'team_members': team_members
     })
