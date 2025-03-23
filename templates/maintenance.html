@@ -389,6 +389,134 @@
             50% { transform: scale(2); opacity: 0.5; }
             100% { transform: scale(1); opacity: 1; }
         }
+
+        /* One Piece Theme Enhancements */
+        .wanted-poster {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('/static/images/wanted-poster.png') repeat;
+            opacity: 0.1;
+            animation: posterFloat 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes posterFloat {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        /* Enhanced Floating Animation */
+        .floating {
+            animation: enhancedFloat 6s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px var(--cyber-yellow))
+                   drop-shadow(0 0 40px var(--cyber-blue));
+        }
+
+        @keyframes enhancedFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            25% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
+            50% { transform: translateY(0) rotate(0deg) scale(1); }
+            75% { transform: translateY(30px) rotate(-5deg) scale(0.9); }
+        }
+
+        /* Devil Fruit Powers Background */
+        .devil-fruit-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(255, 0, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(0, 0, 255, 0.1) 0%, transparent 50%);
+            animation: devilFruitPulse 4s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes devilFruitPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.5); opacity: 0.7; }
+        }
+
+        /* Haki Lightning */
+        .haki {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .haki-spark {
+            position: absolute;
+            background: linear-gradient(45deg, var(--cyber-blue), transparent);
+            filter: blur(1px);
+            opacity: 0;
+            animation: hakiSpark 2s linear infinite;
+        }
+
+        @keyframes hakiSpark {
+            0% { opacity: 0; transform: scale(0); }
+            50% { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 0; transform: scale(2); }
+        }
+
+        /* Mobile Enhancements */
+        @media (max-width: 768px) {
+            .maintenance-content {
+                padding: 15px;
+                margin: 10px;
+                backdrop-filter: blur(10px);
+            }
+
+            .glitch {
+                font-size: 2em;
+                animation: mobileGlitch 500ms infinite;
+            }
+
+            @keyframes mobileGlitch {
+                0% { transform: translate(0); }
+                20% { transform: translate(-2px, 2px); }
+                40% { transform: translate(2px, -2px); }
+                60% { transform: translate(-2px, -2px); }
+                80% { transform: translate(2px, 2px); }
+                100% { transform: translate(0); }
+            }
+
+            .pirate-logo img {
+                max-width: 150px;
+            }
+
+            .typing-text {
+                font-size: 1em;
+                animation: typing 2s steps(20, end);
+            }
+        }
+
+        /* Overwhelming Animation Enhancements */
+        .cyber-text {
+            position: relative;
+        }
+
+        .cyber-text::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid var(--cyber-blue);
+            animation: borderRotate 3s linear infinite;
+        }
+
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); border-color: var(--cyber-blue); }
+            33% { transform: rotate(120deg); border-color: var(--cyber-pink); }
+            66% { transform: rotate(240deg); border-color: var(--cyber-yellow); }
+            100% { transform: rotate(360deg); border-color: var(--cyber-blue); }
+        }
     </style>
 </head>
 <body>
@@ -399,6 +527,9 @@
         <div class="cyber-dots"></div>
         <div class="gear gear-1"></div>
         <div class="gear gear-2"></div>
+        <div class="wanted-poster"></div>
+        <div class="devil-fruit-bg"></div>
+        <div class="haki"></div>
         <div class="maintenance-content">
             <div class="glitch-container">
                 <h1 class="glitch" data-text="SYSTEM MAINTENANCE">SYSTEM MAINTENANCE</h1>
@@ -546,6 +677,56 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
+
+        // Create Haki sparks
+        function createHakiSparks() {
+            const haki = document.querySelector('.haki');
+            for(let i = 0; i < 20; i++) {
+                const spark = document.createElement('div');
+                spark.className = 'haki-spark';
+                spark.style.cssText = `
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    width: ${20 + Math.random() * 30}px;
+                    height: ${2 + Math.random() * 3}px;
+                    transform: rotate(${Math.random() * 360}deg);
+                    animation-delay: ${Math.random() * 2}s;
+                `;
+                haki.appendChild(spark);
+            }
+        }
+
+        // Initialize Haki effects
+        createHakiSparks();
+
+        // Add pirate-themed particles
+        const pirateEmojis = ['⚔️', '🏴‍☠️', '💀', '⚓', '🗡️', '🎯', '🔱', '🌊'];
+        
+        function createPirateParticles() {
+            const container = document.querySelector('.particles');
+            for(let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.textContent = pirateEmojis[Math.floor(Math.random() * pirateEmojis.length)];
+                particle.style.cssText = `
+                    position: fixed;
+                    font-size: ${20 + Math.random() * 30}px;
+                    left: ${Math.random() * 100}vw;
+                    top: ${Math.random() * 100}vh;
+                    animation: float ${5 + Math.random() * 10}s ease-in-out infinite;
+                    opacity: ${0.3 + Math.random() * 0.7};
+                    transform: rotate(${Math.random() * 360}deg);
+                    filter: drop-shadow(0 0 5px var(--cyber-blue));
+                    z-index: 1;
+                `;
+                container.appendChild(particle);
+            }
+        }
+
+        createPirateParticles();
+
+        // Update text content for One Piece theme
+        document.querySelector('.typing-text').textContent = "GRAND LINE SECURITY PROTOCOL INITIATED...";
+        document.querySelector('.message').innerHTML = 'Our <span class="op-text">Nakama</span> are preparing for the next adventure!';
     </script>
 </body>
 </html>
