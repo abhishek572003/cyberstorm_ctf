@@ -9,10 +9,10 @@ class MaintenanceMiddleware:
         from django.conf import settings
         
         if settings.MAINTENANCE_MODE:
-            # Allow superusers to still access the site
-            if not request.user.is_authenticated or not request.user.is_superuser:
-                # Exclude admin paths
-                if not request.path.startswith('/admin'):
+            # Exclude admin paths
+            if not request.path.startswith('/admin'):
+                # Check if user is authenticated and is superuser
+                if not hasattr(request, 'user') or not request.user.is_authenticated or not request.user.is_superuser:
                     return render(request, 'maintenance.html')
         
         return self.get_response(request)
