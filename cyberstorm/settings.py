@@ -230,14 +230,12 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
-    "https://accounts.google.com",
 ]
 
-# Add CSRF trusted origins
+# CSRF trusted origins
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
-    "https://accounts.google.com",
 ]
 
 # Add these settings
