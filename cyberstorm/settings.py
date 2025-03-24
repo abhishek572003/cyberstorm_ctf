@@ -58,10 +58,13 @@ INSTALLED_APPS = [
     'users',
     'info',
     'django.contrib.sitemaps',
+    'social_django',  # Comment this out if not using social-auth-app-django
+    'corsheaders',
 ]
 
 # Middleware
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -70,6 +73,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    # 'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 # URL configuration
@@ -202,3 +206,37 @@ SITE_META = {
     'SITE_IMAGE': 'images/preview.png',
     'TWITTER_HANDLE': '@gdgsiesgst',
 }
+
+# Add authentication backends
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',  # Keep this for standard Django auth
+)
+
+# Google OAuth2 settings
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'YOUR_GOOGLE_CLIENT_ID'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'YOUR_GOOGLE_CLIENT_SECRET'
+
+# Redirect URLs
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'profile'
+LOGOUT_REDIRECT_URL = 'login'
+
+# CORS settings
+CORS_ALLOW_ALL_ORIGINS = True  # Only in development!
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "https://accounts.google.com",
+]
+
+# Add CSRF trusted origins
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "https://accounts.google.com",
+]
+
+# Add these settings
+GOOGLE_OAUTH2_CLIENT_ID = '688526436073-r1e1ncvig77nhh0loc2qi7ijuerhdl08.apps.googleusercontent.com'
+GOOGLE_OAUTH2_CLIENT_SECRET = 'your-client-secret'  # Add your client secret here

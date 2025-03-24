@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    
+    <!-- Add Google Sign-In Script -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <style>
+        body {
+            background: url('{% static "images/registerbg.png" %}');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            font-family: 'Pirata One', cursive;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-top {
+            width: 250px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+
+        .login-container {
+            margin: 2rem auto;
+            max-width: 500px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+
+        .loading-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .treasure-chest {
+            width: 100px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        #buttonDiv {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    {% csrf_token %}
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{% url 'home' %}"><img class="logo-top" src="{% static 'images/logo copy.png' %}"></a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'schedule' %}">Schedule</a></li>
+            <li><a href="{% url 'sponsors' %}">Sponsors</a></li>
+            <li><a href="{% url 'rules' %}">Rules</a></li>
+        </ul>
+    </nav>
+
+    <div class="login-container">
+        <h1>Login with Google</h1>
+        <div id="buttonDiv"></div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-container">
+            <img src="{% static 'images/ship.svg' %}" alt="Loading..." class="treasure-chest">
+            <p class="loading-text">Authenticating...</p>
+        </div>
+    </div>
+
+    <script>
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'block';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+
+        function handleCredentialResponse(response) {
+            showLoading();
+            fetch('/google-authenticate/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    credential: response.credential
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/profile/';
+                } else {
+                    throw new Error(data.message || 'No team found with this email.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(error.message || 'Authentication failed');
+            })
+            .finally(() => {
+                hideLoading();
+            });
+        }
+
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: '688526436073-r1e1ncvig77nhh0loc2qi7ijuerhdl08.apps.googleusercontent.com',
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.getElementById("buttonDiv"),
+                { 
+                    type: 'standard',
+                    theme: 'outline',
+                    size: 'large',
+                    text: 'signin_with',
+                    shape: 'rectangular',
+                    logo_alignment: 'left',
+                    width: 250
+                }
+            );
+            google.accounts.id.prompt(); // Show the One Tap dialog
+        };
+    </script>
+
+    <footer>
+        <!-- ... footer content ... -->
+    </footer>
+</body>
+</html> 
