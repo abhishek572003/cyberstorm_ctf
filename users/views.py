@@ -10,8 +10,13 @@ from django.views.decorators.http import require_POST
 import random
 from django.conf import settings
 from django.urls import reverse
+import json
+from django.views.decorators.csrf import ensure_csrf_cookie
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
 logger = logging.getLogger(__name__)
+
 
 def get_base_context():
     return {
@@ -26,17 +31,16 @@ def get_base_context():
         'cc_email': settings.CC_EMAIL
     }
 
+
 def register(request):
     context = get_base_context()
     if request.method == 'POST':
         try:
             # Get form data
-            team_name_input = request.POST.get('team_name')
-            team_name_stripped = team_name_input.strip();
-            team_name = team_name_stripped.lower();
+            team_name = request.POST.get('team_name')
             password = request.POST.get('password')
             confirm_password = request.POST.get('confirm_password')
-            
+
             # Validate passwords match
             if password != confirm_password:
                 messages.error(request, 'Passwords do not match!')
@@ -66,7 +70,7 @@ def register(request):
                 team_leader_email=leader_email,
                 password=password
             )
-            
+
             # Update additional team fields
             team.is_professional = is_professional
             team.phone_number = leader_phone
@@ -77,7 +81,7 @@ def register(request):
                 name = request.POST.get(f'member_name_{i}')
                 email = request.POST.get(f'member_email_{i}')
                 phone = request.POST.get(f'member_phone_{i}')
-                
+
                 if name and email and phone:
                     TeamMember.objects.create(
                         team=team,
@@ -99,56 +103,56 @@ def register(request):
 
     return render(request, 'users/register.html', context)
 
+
 def login_view(request):
     if request.method == "POST":
-        team_name_input = request.POST["team_name"]
-        team_name_stripped = team_name_input.strip()
-        team_name = team_name_stripped.lower()
+        team_name = request.POST["team_name"].strip().lower()
         password = request.POST["password"]
+
+        logger.info(f"Attempting to log in with team name: '{team_name}'")
+        logger.info(f"Password provided: {'*' * len(password)}")  # Log the length of the password
 
         team = authenticate(request, username=team_name, password=password)
         if team:
+            logger.info(f"Login successful for team: '{team_name}'")
             login(request, team)
             messages.success(request, "Login Successful")
             return redirect("home")
         else:
+            logger.warning(f"Login failed for team: '{team_name}'. Invalid credentials.")
             messages.error(request, "Invalid credentials")
 
     return render(request, "users/login.html")
+
 
 def logout_view(request):
     logout(request)
     return redirect("login")
 
 
-logger = logging.getLogger(__name__)
 @login_required
 def profile(request):
-    try:
-        team = Team.objects.get(team_name=request.user.team_name)
-        team_members = TeamMember.objects.filter(team=team)
-        logger.info(f"Team Members Retrieved: {list(team_members.values('name', 'email'))}")  # Log output
-    except Team.DoesNotExist:
-        team_members = TeamMember.objects.none()
-        logger.warning("Team not found for user.")
+    # Get all team members for the current user's team
+    team_members = TeamMember.objects.filter(team=request.user)
 
     return render(request, 'users/profile.html', {
         'team_members': team_members
     })
 
+
 @require_POST
 def roll_dice(request):
     if not request.user.is_authenticated:
         return JsonResponse({'success': False, 'error': 'Not authenticated'})
-    
+
     try:
         roll_value = random.randint(1, 6)
         bounty_increase = roll_value * 0.1  # Small fraction of points
-        
+
         # Update user's bounty
         request.user.points = (request.user.points or 0) + bounty_increase
         request.user.save()
-        
+
         return JsonResponse({
             'success': True,
             'roll_value': roll_value,
@@ -157,77 +161,145 @@ def roll_dice(request):
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)})
 
+
 def index(request):
     context = get_base_context()
     return render(request, 'info/index.html', context)
+
 
 def about(request):
     context = get_base_context()
     return render(request, 'info/about.html', context)
 
+
 def schedule(request):
     context = get_base_context()
     return render(request, 'info/schedule.html', context)
+
 
 def rules(request):
     context = get_base_context()
     return render(request, 'info/rules.html', context)
 
+
 def sponsors(request):
     context = get_base_context()
     return render(request, 'info/sponsors.html', context)
 
+
 def password_reset(request):
     context = get_base_context()
-    
+
     if request.method == 'POST':
-        team_name_input = request.POST.get('team_name')
-        team_name_stripped = team_name_input.strip()
-        team_name = team_name_stripped.lower()
+        team_name = request.POST.get('team_name')
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         new_password = request.POST.get('new_password')
         confirm_new_password = request.POST.get('confirm_new_password')
-        
+
         # Validate passwords match
         if new_password != confirm_new_password:
             messages.error(request, 'Passwords do not match.')
             return render(request, 'users/password_reset.html', context)
-        
+
         # Try to find the team
         try:
             team = Team.objects.get(team_name=team_name)
-            
+
             # Verify team leader's email and phone
             team_leader = TeamMember.objects.filter(team=team, is_leader=True).first()
-            
+
             if not team_leader:
                 messages.error(request, 'Team leader information not found.')
                 return render(request, 'users/password_reset.html', context)
-            
+
             if team_leader.email != email or team_leader.phone != phone:
                 messages.error(request, 'The provided information does not match our records.')
                 return render(request, 'users/password_reset.html', context)
-            
+
             # Update the password
             team.set_password(new_password)
             team.save()
-            
+
             messages.success(request, 'Password has been reset successfully!')
             return redirect('password_reset_done')
-            
+
         except Team.DoesNotExist:
             messages.error(request, 'Team not found.')
             return render(request, 'users/password_reset.html', context)
-        
+
         except Exception as e:
             logger.error(f"Password reset error: {str(e)}")
             messages.error(request, f'An error occurred: {str(e)}')
             return render(request, 'users/password_reset.html', context)
-    
+
     return render(request, 'users/password_reset.html', context)
+
 
 def password_reset_done(request):
     context = get_base_context()
     return render(request, 'users/password_reset_done.html', context)
+
+
+@ensure_csrf_cookie
+def google_login(request):
+    if request.user.is_authenticated:
+        return redirect('profile')
+    return render(request, 'users/google_login.html')
+
+
+def google_authenticate(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            credential = data.get('credential')
+            
+            # Verify the token
+            idinfo = id_token.verify_oauth2_token(
+                credential, 
+                requests.Request(), 
+                '688526436073-r1e1ncvig77nhh0loc2qi7ijuerhdl08.apps.googleusercontent.com'
+            )
+            
+            email = idinfo['email']
+            
+            # First try to find the email in TeamMember
+            team_member = TeamMember.objects.filter(email=email).first()
+            
+            if team_member:
+                # Log in as the team
+                team = team_member.team
+                login(request, team)
+                
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Login successful',
+                    'is_leader': team_member.is_leader
+                })
+            else:
+                # If not found in TeamMember, try team_leader_email
+                team = Team.objects.filter(team_leader_email=email).first()
+                if team:
+                    login(request, team)
+                    return JsonResponse({
+                        'success': True,
+                        'message': 'Login successful as team leader'
+                    })
+                else:
+                    return JsonResponse({
+                        'success': False,
+                        'message': 'No team found with this email'
+                    }, status=404)
+                    
+        except Exception as e:
+            logger.error(f"Google authentication error: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'message': str(e)
+            }, status=500)
+
+    return JsonResponse({
+        'success': False,
+        'message': 'Invalid request method'
+    }, status=405)
 
