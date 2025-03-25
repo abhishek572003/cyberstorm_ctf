@@ -5,7 +5,6 @@ from . import views
 urlpatterns = [
     path("register/", views.register, name="register"),
     path("login/", views.login_view, name="login"),
-    path("google-authenticate/", views.google_authenticate, name="google_authenticate"),
     path("logout/", views.logout_view, name="logout"),
     path("profile/", views.profile, name="profile"),
     path('roll-dice/', views.roll_dice, name='roll_dice'),
