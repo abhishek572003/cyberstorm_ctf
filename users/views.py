@@ -1,29 +1,24 @@
-from django.contrib.auth import authenticate, logout
-from django.contrib.auth import login as auth_login
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth.models import User
-from .models import Team, TeamMember
-from django.contrib.auth.decorators import login_required
+import json
 import logging
-from django.http import JsonResponse
-from django.views.decorators.http import require_POST
 import random
+
 from django.conf import settings
-from django.urls import reverse
-import json
-from django.views.decorators.csrf import ensure_csrf_cookie
-from google.oauth2 import id_token
-from google.auth.transport import requests
-import json
-from authlib.integrations.django_client import OAuth
-from django.conf import settings
-from django.shortcuts import redirect, render, redirect
-from django.urls import reverse
-from urllib.parse import quote_plus, urlencode
-from django.core.mail import send_mail, EmailMultiAlternatives
+from django.contrib import messages
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMultiAlternatives
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.utils.html import strip_tags
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.http import require_POST
+from google.auth.transport import requests
+from google.oauth2 import id_token
+
+from .models import Team, TeamMember
 
 logger = logging.getLogger(__name__)
 
