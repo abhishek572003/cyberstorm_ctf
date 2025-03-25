@@ -640,38 +640,561 @@ text-decoration: none;
     font-size: 1.4rem;
 }
 
-    </style>
-	<style>
-        .card-container-community {
-            display: flex;
-            gap: 20px; /* Space between cards */
-            flex-wrap: wrap; /* Ensures responsiveness */
-            justify-content: center; /* Center aligns the cards */
-		color: black;
-        }
-        .card-community {
-            width: calc(33.33% - 20px); /* 3 cards per row */
-            min-width: 250px; /* Prevents cards from becoming too small */
-            border: 1px solid #FFD700;
-	    background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        }
+.partner-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
 
-        /* Responsive Breakpoints */
-        @media (max-width: 900px) {
-            .card-community {
-                width: calc(50% - 20px); /* 2 cards per row */
-            }
-        }
-        @media (max-width: 600px) {
-            .card-community {
-                width: 100%; /* 1 card per row */
-            }
-        }
+.card-community {
+    background: rgba(30, 30, 30, 0.9);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-community:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border-color: #FFD700;
+}
+
+.card-community img {
+    max-width: 200px;
+    height: auto;
+    margin: 0 auto 20px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.2));
+}
+
+.card-community:hover img {
+    transform: scale(1.05);
+}
+
+.card-community h6 {
+    color: #FFD700;
+    font-size: 1.8rem;
+    margin: 15px 0;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.card-community p {
+    color: #fff;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 15px 0;
+}
+
+.card-community a {
+    color: #FFD700;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+    display: inline-block;
+    margin-top: 15px;
+}
+
+.card-community a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* Special cards for different partner types */
+.main-sponsor {
+    grid-column: 1 / -1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+}
+
+.powered-by {
+    grid-column: span 2;
+    background: linear-gradient(45deg, rgba(30,30,30,0.95), rgba(60,60,60,0.95));
+}
+
+.education-partner {
+    grid-column: span 2;
+}
+
+/* Section headers */
+.section-title {
+    text-align: center;
+    color: #FFD700;
+    font-size: 2.5rem;
+    margin: 50px 0 30px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* Become a sponsor section */
+.become-sponsor {
+    grid-column: 1 / -1;
+    background: linear-gradient(45deg, rgba(30,30,30,0.9), rgba(60,60,60,0.9));
+    padding: 40px;
+    text-align: center;
+    margin: 50px auto;
+    max-width: 800px;
+    border: 2px solid #FFD700;
+    border-radius: 15px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .powered-by, .education-partner {
+        grid-column: span 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .partner-grid {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
+    .card-community {
+        margin: 10px;
+    }
+    .section-title {
+        font-size: 2rem;
+        margin: 30px 0 20px;
+    }
+}
+
+/* Base styles */
+.sponsors-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Title Sponsor Section */
+.title-sponsor {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 50px 0;
+}
+
+.title-sponsor .card {
+    width: 60%;
+    max-width: 800px;
+}
+
+/* Support Row */
+.support-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin: 50px 0;
+}
+
+/* Community Partners Grid */
+.community-partners {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin: 50px 0;
+}
+
+/* Card Styles */
+.card {
+    background: rgba(30, 30, 30, 0.95);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 400px; /* Fixed height */
+    perspective: 1000px;
+    margin: 20px 0;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border-color: #FFD700;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.card:hover .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    padding: 30px;
+}
+
+.card-front {
+    background: linear-gradient(135deg, #1E1E1E, #2C2C2C);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.card-back {
+    background: linear-gradient(45deg, #1E1E1E, #2C2C2C);
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+}
+
+.card img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    margin: 20px auto;
+    filter: brightness(0) invert(1); /* Make dark logos white */
+    transition: all 0.3s ease;
+}
+
+.card h3 {
+    color: #FFD700;
+    font-size: 1.8rem;
+    margin: 15px 0;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.card-back p {
+    color: #fff;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 15px 0;
+}
+
+.card-back a {
+    color: #FFD700;
+    text-decoration: none;
+    margin-top: 20px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.card-back a:hover {
+    color: #fff;
+    transform: scale(1.05);
+}
+
+/* Section Headers */
+.section-header {
+    text-align: center;
+    color: #FFD700;
+    font-size: 2.5rem;
+    margin: 40px 0;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    background: rgba(30, 30, 30, 0.8); /* Dark background for better contrast */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+    .title-sponsor .card {
+        width: 80%;
+    }
+    .community-partners {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .support-row {
+        grid-template-columns: 1fr;
+    }
+    .community-partners {
+        grid-template-columns: 1fr;
+    }
+    .title-sponsor .card {
+        width: 90%;
+    }
+    .card {
+        margin: 10px 0;
+    }
+    .section-header {
+        font-size: 2rem;
+        margin: 20px 0;
+        padding: 15px;
+    }
+    .card-back {
+        padding: 15px;
+    }
+    .card-back p {
+        font-size: 1rem;
+    }
+}
+
+/* Add back the Become a Sponsor section */
+.become-sponsor-section {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(45deg, rgba(30,30,30,0.9), rgba(60,60,60,0.9));
+    margin: 50px 0;
+    border-top: 2px solid #FFD700;
+    border-bottom: 2px solid #FFD700;
+}
+
+.become-sponsor-section h2 {
+    color: #FFD700;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.become-sponsor-section p {
+    color: white;
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    line-height: 1.6;
+}
+
+/* WhatsApp Contact Section */
+.contact-section {
+    text-align: center;
+    padding: 40px 20px;
+    background: rgba(30, 30, 30, 0.95);
+    margin: 30px 0;
+}
+
+.whatsapp-contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: #25D366;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    margin: 20px 0;
+}
+
+.whatsapp-contact:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+}
+
+.whatsapp-contact i {
+    font-size: 1.4rem;
+}
+
+/* Fix footer images */
+.footer-section img {
+    width: 150px;
+    height: auto;
+    margin: 10px 0;
+}
+
+/* Update section headers to be more visible */
+.section-header {
+    text-align: center;
+    color: #FFD700;
+    font-size: 2.5rem;
+    margin: 40px 0;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    background: rgba(30, 30, 30, 0.8); /* Dark background for better contrast */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Fix card heights and content trimming */
+.card {
+    min-height: 450px; /* Increased minimum height */
+    height: auto; /* Allow content to expand */
+    margin: 30px 0; /* More vertical spacing */
+}
+
+.card-back {
+    overflow-y: auto; /* Allow scrolling for long content */
+}
+
+/* Make sponsor and contact sections side by side */
+.sponsor-contact-wrapper {
+    display: flex;
+    gap: 30px;
+    margin: 50px auto;
+    max-width: 1400px;
+    padding: 0 20px;
+}
+
+.become-sponsor-section, .contact-section {
+    flex: 1;
+    margin: 0;
+}
+
+/* Responsive fixes */
+@media (max-width: 768px) {
+    .sponsor-contact-wrapper {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .card {
+        min-height: 400px;
+        margin: 15px 0;
+    }
+    
+    .card-back {
+        padding: 15px;
+    }
+    
+    .section-header {
+        font-size: 2rem;
+        margin: 20px 0;
+        padding: 15px;
+    }
+}
+
+/* Info button styling */
+.info-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 215, 0, 0.2);
+    color: #FFD700;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.info-btn:hover {
+    background: rgba(255, 215, 0, 0.3);
+    transform: scale(1.1);
+}
+
+/* Unified sponsor and contact section */
+.sponsor-contact-wrapper {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 40px;
+    background: linear-gradient(135deg, rgba(30,30,30,0.95), rgba(44,44,44,0.95));
+    border: 2px solid #FFD700;
+    border-radius: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.sponsor-contact-wrapper > div {
+    padding: 30px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+}
+
+/* Fix content trimming in cards */
+.card {
+    min-height: 500px; /* Increased height */
+    height: auto;
+}
+
+.card-back {
+    padding: 30px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-back p {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 20px;
+}
+
+.card-back a {
+    margin-top: auto;
+    padding: 10px 20px;
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid #FFD700;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.card-back a:hover {
+    background: rgba(255, 215, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Mobile responsiveness improvements */
+@media (max-width: 768px) {
+    .sponsor-contact-wrapper {
+        grid-template-columns: 1fr;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .card {
+        min-height: 450px;
+    }
+
+    .card-back {
+        padding: 20px;
+    }
+
+    .info-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 1rem;
+    }
+}
+
+.sponsor-contact-wrapper h2 {
+    color: #FFD700;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.contact-section {
+    text-align: center;
+}
+
+.contact-section p {
+    color: white;
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    line-height: 1.6;
+}
     </style>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'images/gdglogo.png' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/gdglogo.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'images/gdglogo.png' %}">
 </head>
 <body>
     {% block content %}
@@ -705,202 +1228,152 @@ text-decoration: none;
         </nav>
     </section>
 
-    <section class="sponsors">
-        <div class="sponsor-contact">
-            <a href="mailto:{{ contact_email }}?cc={{ cc_email }}" class="sponsor-link">
-                <img src="{% static 'images/sponsorchest.png' %}" class="become-sponsor">
-            </a>
-            <a href="https://wa.me/{{ whatsapp_sponsor_number }}/?text={{ whatsapp_sponsor_text }}" 
-               class="sponsor-whatsapp-btn" target="_blank">
-                <i class="fab fa-whatsapp"></i>
-                Chat with us about sponsorship
-            </a>
-        </div>
-        <br><br>
-        <div class="row">
-            <div class="three-column">
-<h1> Our Sponsors </h1>
-                <div class="card">
-                    <div class="content">
-                      <div class="back">
-                        <div class="back-content">
-                          <svg stroke="#ffffff" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" height="50px" width="50px" fill="#ffffff">
-                  
-                          <g stroke-width="0" id="SVGRepo_bgCarrier"></g>
-                  
-                          <g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g>
-                  
-                          <g id="SVGRepo_iconCarrier">
-                  
-                          <img src="{% static 'images/redfox.png' %}">
-                          </g>
-                  
-                          </svg>
+    <div class="sponsors-container">
+        <!-- Title Sponsor -->
+        <h2 class="section-header">Powered By</h2>
+        <div class="title-sponsor">
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="info-btn" title="Click to learn more">
+                            <i class="fas fa-info"></i>
                         </div>
-                      </div>
-                      <div class="front">
-                        
-                        <div class="img">
-                          <div class="circle">
-                          </div>
-                          <div class="circle" id="right">
-                          </div>
-                          <div class="circle" id="bottom">
-                          </div>
-                        </div>
-                  
-                        <div class="front-content">
-                          <small class="badge">Redfox</small>
-                          <div class="description">
-                            <div class="title">
-                              <p class="title">
-                                <p class="card-text">
-<p>RedFox Security is a global penetration testing firm dedicated to securing businesses from cyber threats. With over a decade of experience, we specialize in advanced security assessments, helping enterprises identify and fix vulnerabilities. Our expert team delivers practical, results-driven cybersecurity solutions across multiple countries.
+                        <img src="{% static 'images/redfox.png' %}" alt="RedFox Security">
+                        <h3>RedFox Security</h3>
+                    </div>
+                    <div class="card-back">
+                        <p>RedFox Security is a global penetration testing firm dedicated to securing businesses from cyber threats. With over a decade of experience, we specialize in advanced security assessments, helping enterprises identify and fix vulnerabilities. Our expert team delivers practical, results-driven cybersecurity solutions across multiple countries.
 We also offer specialized cybersecurity courses through RedFox Academy, providing hands-on training in penetration testing and offensive security skills. In addition to our courses, we provide free cybersecurity content on YouTube, making learning accessible to everyone.
 Our expertise has been recognized globally in top cybersecurity events such as Black Hat Asia and Black Hat Vegas as well as in BSides Goa, Pune and Mumbai.
-Redfox Security is proud to foster the growth of future ethical hacking and security professionals, empowering them with the skills and knowledge to excel in the ever-evolving cybersecurity landscape.
-</p><br>
-                                  <a href="https://linktr.ee/redfoxsec"> https://linktr.ee/redfoxsec</a>
-                                </p>
-                                              </p>
-                              <svg fill-rule="nonzero" height="15px" width="15px" viewBox="0,0,256,256" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode: normal" text-anchor="none" font-size="none" font-weight="none" font-family="none" stroke-dashoffset="0" stroke-dasharray="" stroke-miterlimit="10" stroke-linejoin="miter" stroke-linecap="butt" stroke-width="1" stroke="none" fill-rule="nonzero" fill="#20c997"><g transform="scale(8,8)"><path d="M25,27l-9,-6.75l-9,6.75v-23h18z"></path></g></g></svg>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+Redfox Security is proud to foster the growth of future ethical hacking and security professionals, empowering them with the skills and knowledge to excel in the ever-evolving cybersecurity landscape.</p>
+                        <a href="https://linktr.ee/redfoxsec" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Learn More
+                        </a>
                     </div>
-                  </div>                
-            </div><br><br><br><br><br><br>
-            <div class="three-column">
-<h1>Powered By</h1>
-                <div class="card">
-                    <div class="content">
-                      <div class="back">
-                        <div class="back-content">
-                          <svg stroke="#ffffff" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" height="50px" width="50px" fill="#ffffff">
-                  
-                          <g stroke-width="0" id="SVGRepo_bgCarrier"></g>
-                  
-                          <g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g>
-                  
-                          <g id="SVGRepo_iconCarrier">
-                  
-                          <img src="{% static 'images/mim.png' %}">
-                          </g>
-                  
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="front">
-                        
-                        <div class="img">
-                          <div class="circle">
-                          </div>
-                          <div class="circle" id="right">
-                          </div>
-                          <div class="circle" id="bottom">
-                          </div>
-                        </div>
-                  
-                        <div class="front-content">
-                          <small class="badge">Made in Mumbai</small>
-                          <div class="description">
-                            <div class="title">
-                              <p class="title">
-                                <p class="card-text">
-<p>Made in Mumbai is a dynamic non-profit initiative dedicated to scaling Mumbai’s tech ecosystem. From thriving street markets to state-of-the-art co-working spaces, the city is a powerhouse of innovation and opportunity. Our mission is to empower startups, nurture tech communities, and support small businesses, driving Mumbai’s transformation into a global tech hub.
-With 30,000+ members, 25 active tech communities, and 40 visionary founders, we are building a collaborative space where ideas turn into impact. Whether you're a developer, entrepreneur, or tech enthusiast, Made in Mumbai is your gateway to networking, mentorship, and growth in the City of Dreams. 🚀
-</p><br>
-                <a href="https://linktr.ee/madeinmumbai"> https://linktr.ee/madeinmumbai</a>
-                                </p>
-                                              </p>
-                              <svg fill-rule="nonzero" height="15px" width="15px" viewBox="0,0,256,256" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode: normal" text-anchor="none" font-size="none" font-weight="none" font-family="none" stroke-dashoffset="0" stroke-dasharray="" stroke-miterlimit="10" stroke-linejoin="miter" stroke-linecap="butt" stroke-width="1" stroke="none" fill-rule="nonzero" fill="#20c997"><g transform="scale(8,8)"><path d="M25,27l-9,-6.75l-9,6.75v-23h18z"></path></g></g></svg>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                
+                </div>
             </div>
         </div>
-	    <div class="three-column">
-<h1>Education Partner</h1>
-                <div class="card">
-                    <div class="content">
-                      <div class="back">
-                        <div class="back-content">
-                          <svg stroke="#ffffff" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" height="50px" width="50px" fill="#ffffff">
-                  
-                          <g stroke-width="0" id="SVGRepo_bgCarrier"></g>
-                  
-                          <g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g>
-                  
-                          <g id="SVGRepo_iconCarrier">
-                  
-                          <img src="{% static 'images/Global Edventures.png' %}">
-                          </g>
-                  
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="front">
-                        
-                        <div class="img">
-                          <div class="circle">
-                          </div>
-                          <div class="circle" id="right">
-                          </div>
-                          <div class="circle" id="bottom">
-                          </div>
-                        </div>
-                  
-                        <div class="front-content">
-                          <small class="badge">Global Edventures</small>
-                          <div class="description">
-                            <div class="title">
-                              <p class="title">
-                                <p class="card-text">
-<p>At Global Edventures, we are passionate about turning international dreams into reality. As a leading overseas education consultancy, we specialize in guiding students and professionals to pursue higher education and career opportunities across the globe. From personalized counseling to university applications, visa assistance, and coaching for standardized tests like IELTS, GRE, and more – we offer end-to-end support that ensures a smooth and successful transition abroad.
-Where Your Dreams Take a Flight. 🌍✨
-With a global network of partner institutions and a student-first approach, Global Edventures is committed to excellence, transparency, and trust.
-</p><br>
-                                </p>
-                                              </p>
-                              <svg fill-rule="nonzero" height="15px" width="15px" viewBox="0,0,256,256" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode: normal" text-anchor="none" font-size="none" font-weight="none" font-family="none" stroke-dashoffset="0" stroke-dasharray="" stroke-miterlimit="10" stroke-linejoin="miter" stroke-linecap="butt" stroke-width="1" stroke="none" fill-rule="nonzero" fill="#20c997"><g transform="scale(8,8)"><path d="M25,27l-9,-6.75l-9,6.75v-23h18z"></path></g></g></svg>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                
-            </div>
-        </div><br><br><br>
-	    <h2>Our Community Partners</h2>
-	    <div class="card-container-community">
-        <div class="card-community"><h6>Breachforce</h6>
-		<img src="{% static 'images/breach.png' %}">
-	<p>BreachForce is an open security community of security researchers, ethical hackers, and cybersecurity professionals dedicated to advancing offensive security, red teaming, and penetration testing.
-We organize monthly in-person meet-ups in Mumbai, where  professionals, cybersecurity enthusiasts, and beginners discuss on latest threats, emerging security trends,  methodologies, exploits, and defensive strategies.
-Our community emphasizes collaborative knowledge sharing, practical hands-on skill development, and real-world security exercises. BreachForce empowers individuals to elevate their cybersecurity capabilities, grow their professional networks, and excel in their security careers.
-	<a href="https://linktree.com/breachforce">https://linktree.com/breachforce</a>
-	</p>
-	</div>
-		    <div class="card-community"><h6>HacktheBox</h6>
-		<img src="{% static 'images/htb.png' %}">
-	<p>Hack The Box (HTB) is a global cybersecurity community and training platform where enthusiasts and professionals sharpen their real-world skills in a virtual battleground. Through hands-on labs, Capture The Flag (CTF) challenges, and real-world attack simulations, HTB offers a fun and challenging way to level up your game. Join us to test your skills, solve complex security scenarios, and make valuable connections with like-minded ethical hackers and security experts!
-<a href="https://linktr.ee/htbmumbai">https://linktr.ee/htbmumbai</a>
-	</p></div>
-<div class="card-community"><h6>nCreeps</h6>
-		<img src="{% static 'images/ncreeps.png' %}">
-	<p>nCreeps is a cybersecurity community dedicated to security research. We organize Capture The Flag (CTF) events such as ShunyaCTF, contribute to open-source security projects, and mentor aspiring security professionals. Our mission is to promote innovation, collaboration, and knowledge sharing within the cybersecurity field
-	<a href="http://linktr.ee/ncreeps">http://linktr.ee/ncreeps</a>
-	</p></div>
 
+        <!-- Support Row -->
+        <div class="support-row">
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h3>Supported By</h3>
+                        <img src="{% static 'images/mim.png' %}" alt="Made in Mumbai">
+                    </div>
+                    <div class="card-back">
+                        <p>Made in Mumbai is a dynamic non-profit initiative dedicated to scaling Mumbai's tech ecosystem. From thriving street markets to state-of-the-art co-working spaces, the city is a powerhouse of innovation and opportunity. Our mission is to empower startups, nurture tech communities, and support small businesses, driving Mumbai's transformation into a global tech hub.
+With 30,000+ members, 25 active tech communities, and 40 visionary founders, we are building a collaborative space where ideas turn into impact. Whether you're a developer, entrepreneur, or tech enthusiast, Made in Mumbai is your gateway to networking, mentorship, and growth in the City of Dreams. 🚀</p>
+                        <a href="https://linktr.ee/madeinmumbai">Learn More →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h3>Education Partner</h3>
+                        <img src="{% static 'images/Global Edventures.png' %}" alt="Global Edventures">
+                    </div>
+                    <div class="card-back">
+                        <p>At Global Edventures, we are passionate about turning international dreams into reality. As a leading overseas education consultancy, we specialize in guiding students and professionals to pursue higher education and career opportunities across the globe. From personalized counseling to university applications, visa assistance, and coaching for standardized tests like IELTS, GRE, and more – we offer end-to-end support that ensures a smooth and successful transition abroad.
+Where Your Dreams Take a Flight. 🌍✨
+With a global network of partner institutions and a student-first approach, Global Edventures is committed to excellence, transparency, and trust.</p>
+                        <a href="#">Learn More →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Community Partners -->
+        <h2 class="section-header">Community Partners</h2>
+        <div class="community-partners">
+            <!-- Breachforce -->
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="info-btn" title="Click to learn more">
+                            <i class="fas fa-info"></i>
+                        </div>
+                        <img src="{% static 'images/breach.png' %}" alt="Breachforce">
+                        <h3>Breachforce</h3>
+                    </div>
+                    <div class="card-back">
+                        <p>BreachForce is an open security community of security researchers, ethical hackers, and cybersecurity professionals dedicated to advancing offensive security, red teaming, and penetration testing.
+We organize monthly in-person meet-ups in Mumbai, where  professionals, cybersecurity enthusiasts, and beginners discuss on latest threats, emerging security trends,  methodologies, exploits, and defensive strategies.
+Our community emphasizes collaborative knowledge sharing, practical hands-on skill development, and real-world security exercises. BreachForce empowers individuals to elevate their cybersecurity capabilities, grow their professional networks, and excel in their security careers.</p>
+                        <a href="https://linktree.com/breachforce" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Learn More
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HTB -->
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="info-btn" title="Click to learn more">
+                            <i class="fas fa-info"></i>
+                        </div>
+                        <img src="{% static 'images/htb.png' %}" alt="HackTheBox">
+                        <h3>HackTheBox</h3>
+                    </div>
+                    <div class="card-back">
+                        <p>Hack The Box (HTB) is a global cybersecurity community and training platform where enthusiasts and professionals sharpen their real-world skills in a virtual battleground. Through hands-on labs, Capture The Flag (CTF) challenges, and real-world attack simulations, HTB offers a fun and challenging way to level up your game. Join us to test your skills, solve complex security scenarios, and make valuable connections with like-minded ethical hackers and security experts!</p>
+                        <a href="https://linktr.ee/htbmumbai" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Learn More
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- nCreeps -->
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="info-btn" title="Click to learn more">
+                            <i class="fas fa-info"></i>
+                        </div>
+                        <img src="{% static 'images/ncreeps.png' %}" alt="nCreeps">
+                        <h3>nCreeps</h3>
+                    </div>
+                    <div class="card-back">
+                        <p>nCreeps is a cybersecurity community dedicated to security research. We organize Capture The Flag (CTF) events such as ShunyaCTF, contribute to open-source security projects, and mentor aspiring security professionals. Our mission is to promote innovation, collaboration, and knowledge sharing within the cybersecurity field.</p>
+                        <a href="http://linktr.ee/ncreeps" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Learn More
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sponsor and Contact Sections -->
+        <div class="sponsor-contact-wrapper">
+            <!-- Become a Sponsor Section -->
+            <div class="become-sponsor-section">
+                <h2>Become a Sponsor</h2>
+                <p>Join us in shaping the future of technology and innovation. As a sponsor, you'll have the opportunity to connect with talented developers, showcase your brand, and support the tech community.</p>
+                <a href="mailto:{{ contact_email }}" class="email-btn">
+                    <i class="fas fa-envelope"></i>
+                    Contact for Sponsorship
+                </a>
+            </div>
+
+            <!-- WhatsApp Contact Section -->
+            <div class="contact-section">
+                <h2>Have Questions?</h2>
+                <p>Chat with us on WhatsApp for quick responses</p>
+                <a href="https://wa.me/{{ whatsapp_sponsor_number }}/?text={{ whatsapp_sponsor_text }}" 
+                   class="whatsapp-contact" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    Connect on WhatsApp
+                </a>
+            </div>
+        </div>
     </div>
-        <br><br><br><br><br><br>
-    </section>
+
     <footer>
         <div class="footer-content">
             <!-- Quick Links -->

@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Team</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <style>
+        /* Copy base styles from login.html */
+        body {
+            background: url('{% static "images/registerbg.png" %}');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            font-family: 'Pirata One', cursive;
+            color: white;
+            text-align: center;
+        }
+        
+        .team-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .team-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 215, 0, 0.2);
+        }
+        
+        .team-card h3 {
+            color: #FFD700;
+            margin-bottom: 10px;
+        }
+        
+        .team-card p {
+            margin: 5px 0;
+        }
+        
+        .select-btn {
+            background: #1E1E1E;
+            color: #FFD700;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 10px;
+            font-family: 'Pirata One', cursive;
+        }
+        
+        .select-btn:hover {
+            background: #FFD700;
+            color: #1E1E1E;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 600px) {
+            .team-card {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Select Your Team</h1>
+    <p>Multiple teams found for {{ email }}. Please select one:</p>
+    
+    <div class="team-cards">
+        {% for team in teams %}
+        <form method="post" action="{% url 'select_team' %}" class="team-card">
+            {% csrf_token %}
+            <input type="hidden" name="team_id" value="{{ team.id }}">
+            <input type="hidden" name="email" value="{{ email }}">
+            <h3>{{ team.team_name }}</h3>
+            <p>Team Leader: {{ team.team_leader }}</p>
+            <p>Members: {{ team.teammember_set.count }}</p>
+            <button type="submit" class="select-btn">Select Team</button>
+        </form>
+        {% endfor %}
+    </div>
+</body>
+</html> 

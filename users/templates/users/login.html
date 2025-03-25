@@ -329,15 +329,10 @@ footer {
     <form method="post">
         {% for message in messages %}
         <p>{{ message }}</p>
-    {% endfor %}
+        {% endfor %}
         {% csrf_token %}
-        <label>Team Name:</label>
-        <input type="text" name="team_name" required>
-
-        <label>Password:</label>
-        <input type="password" name="password" required>
-        <br>
-        <a href="{% url 'password_reset' %}" style="color: #FFD700; text-decoration: none; font-size: 1rem; display: block; text-align: right; margin: 5px 0 15px;">Forgot Password?</a>
+        <label>Email:</label>
+        <input type="email" name="email" required>
         <br>
         <button type="submit">Login</button>
     </form>

@@ -1,4 +1,5 @@
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import authenticate, logout
+from django.contrib.auth import login as auth_login
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -14,6 +15,15 @@ import json
 from django.views.decorators.csrf import ensure_csrf_cookie
 from google.oauth2 import id_token
 from google.auth.transport import requests
+import json
+from authlib.integrations.django_client import OAuth
+from django.conf import settings
+from django.shortcuts import redirect, render, redirect
+from django.urls import reverse
+from urllib.parse import quote_plus, urlencode
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 logger = logging.getLogger(__name__)
 
@@ -92,7 +102,7 @@ def register(request):
                     )
 
             # Auto login after registration
-            login(request, team)
+            auth_login(request, team)
             messages.success(request, 'Registration successful! Welcome aboard!')
             return redirect('profile')
 
@@ -106,28 +116,57 @@ def register(request):
 
 def login_view(request):
     if request.method == "POST":
-        team_name = request.POST["team_name"].strip().lower()
-        password = request.POST["password"]
+        email = request.POST["email"].strip().lower()
+        
+        # Generate a 6-digit verification code
+        verification_code = str(random.randint(100000, 999999))
+        
+        # Store the code in session
+        request.session['verification_code'] = verification_code
+        request.session['email'] = email
+        
+        # Send email
+        try:
+            # Render the email template
+            html_content = render_to_string('users/email_template.html', {
+                'verification_code': verification_code
+            })
+            text_content = strip_tags(html_content)  # Create plain text version
 
-        logger.info(f"Attempting to log in with team name: '{team_name}'")
-        logger.info(f"Password provided: {'*' * len(password)}")  # Log the length of the password
+            # Create the email
+            email_message = EmailMultiAlternatives(
+                subject='Cyberstorm Verification Code',  # Changed subject
+                body=text_content,
+                from_email=settings.EMAIL_HOST_USER,
+                to=[email]
+            )
 
-        team = authenticate(request, username=team_name, password=password)
-        if team:
-            logger.info(f"Login successful for team: '{team_name}'")
-            login(request, team)
-            messages.success(request, "Login Successful")
-            return redirect("home")
-        else:
-            logger.warning(f"Login failed for team: '{team_name}'. Invalid credentials.")
-            messages.error(request, "Invalid credentials")
+            # Attach HTML content
+            email_message.attach_alternative(html_content, "text/html")
+
+            # Send email
+            email_message.send()
+            messages.success(request, 'Verification code sent to your email!')
+
+            return render(request, 'users/verify_email.html', {
+                'verification_sent': True,
+                'email': email
+            })
+
+        except Exception as primary_error:
+            logger.error(f"Primary email failed: {str(primary_error)}")
 
     return render(request, "users/login.html")
 
 
 def logout_view(request):
+    # Clear any session data
+    request.session.flush()
+    # Perform Django logout
     logout(request)
-    return redirect("login")
+    messages.success(request, "Successfully logged out!")
+    # Redirect to login page
+    return redirect('login')
 
 
 @login_required
@@ -253,24 +292,33 @@ def google_authenticate(request):
         try:
             data = json.loads(request.body)
             credential = data.get('credential')
-            
+
+            if not credential:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'No credential provided'
+                }, status=400)
+
             # Verify the token
             idinfo = id_token.verify_oauth2_token(
-                credential, 
-                requests.Request(), 
-                settings.GOOGLE_OAUTH2_CLIENT_ID  # Use the setting for client ID
+                credential,
+                requests.Request(),
+                '662373702811-3l7l6sp7l177n0uov9n3edbep6c2j1ut.apps.googleusercontent.com'
             )
-            
+
             email = idinfo['email']
-            
+
+            # Log the token verification success
+            logger.info(f"Token verified successfully for email: {email}")
+
             # First try to find the email in TeamMember
             team_member = TeamMember.objects.filter(email=email).first()
-            
+
             if team_member:
                 # Log in as the team
                 team = team_member.team
-                login(request, team)
-                
+                auth_login(request, team)
+
                 return JsonResponse({
                     'success': True,
                     'message': 'Login successful',
@@ -280,7 +328,7 @@ def google_authenticate(request):
                 # If not found in TeamMember, try team_leader_email
                 team = Team.objects.filter(team_leader_email=email).first()
                 if team:
-                    login(request, team)
+                    auth_login(request, team)
                     return JsonResponse({
                         'success': True,
                         'message': 'Login successful as team leader'
@@ -290,7 +338,7 @@ def google_authenticate(request):
                         'success': False,
                         'message': 'No team found with this email'
                     }, status=404)
-                    
+
         except Exception as e:
             logger.error(f"Google authentication error: {str(e)}")
             return JsonResponse({
@@ -302,4 +350,155 @@ def google_authenticate(request):
         'success': False,
         'message': 'Invalid request method'
     }, status=405)
+
+oauth = OAuth()
+
+oauth.register(
+    "auth0",
+    client_id=settings.AUTH0_CLIENT_ID,
+    client_secret=settings.AUTH0_CLIENT_SECRET,
+    client_kwargs={
+        "scope": "openid profile email",
+    },
+    server_metadata_url=f"https://{settings.AUTH0_DOMAIN}/.well-known/openid-configuration",
+)
+
+
+def index(request):
+
+    return render(
+        request,
+        "index.html",
+        context={
+            "session": request.session.get("user"),
+            "pretty": json.dumps(request.session.get("user"), indent=4),
+        },
+    )
+
+
+def callback(request):
+    token = oauth.auth0.authorize_access_token(request)
+    request.session["user"] = token
+    return redirect(request.build_absolute_uri(reverse("index")))
+
+
+def login(request):
+    return oauth.auth0.authorize_redirect(
+        request, request.build_absolute_uri(reverse("callback"))
+    )
+
+
+def verify_email(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        
+        # Generate a 6-digit verification code
+        verification_code = str(random.randint(100000, 999999))
+        
+        # Store the code in session
+        request.session['verification_code'] = verification_code
+        request.session['email'] = email
+        
+        try:
+            # Render the email template
+            html_content = render_to_string('users/email_template.html', {
+                'verification_code': verification_code
+            })
+            text_content = strip_tags(html_content)  # Create plain text version
+            
+            # Create the email
+            email_message = EmailMultiAlternatives(
+                subject='Cyberstorm Verification Code',  # Changed subject
+                body=text_content,
+                from_email=settings.EMAIL_HOST_USER,
+                to=[email]
+            )
+            
+            # Attach HTML content
+            email_message.attach_alternative(html_content, "text/html")
+            
+            # Send email
+            email_message.send()
+            messages.success(request, 'Verification code sent to your email!')
+            
+        except Exception as primary_error:
+            logger.error(f"Primary email failed: {str(primary_error)}")
+        
+        return render(request, 'users/verify_email.html', {
+            'verification_sent': True,
+            'email': email
+        })
+            
+    return render(request, 'users/verify_email.html', {'verification_sent': False})
+
+def verify_code(request):
+    if request.method == 'POST':
+        entered_code = request.POST.get('code')
+        email = request.POST.get('email')
+        stored_code = request.session.get('verification_code')
+        stored_email = request.session.get('email')
+        
+        if entered_code == stored_code and email == stored_email:
+            # Find all teams associated with this email
+            teams = []
+            
+            # Check TeamMember table
+            team_members = TeamMember.objects.filter(email=email)
+            for member in team_members:
+                if member.team not in teams:
+                    teams.append(member.team)
+            
+            # Check Team table for team leaders
+            leader_teams = Team.objects.filter(team_leader_email=email)
+            for team in leader_teams:
+                if team not in teams:
+                    teams.append(team)
+            
+            if len(teams) == 0:
+                messages.error(request, 'No team found with this email.')
+                return render(request, 'users/verify_email.html', {
+                    'verification_sent': True,
+                    'email': email
+                })
+            elif len(teams) == 1:
+                # If only one team found, log them in
+                auth_login(request, teams[0])
+                messages.success(request, f'Welcome back, {teams[0].team_name}!')
+                return redirect('profile')
+            else:
+                # If multiple teams found, let user choose
+                return render(request, 'users/select_team.html', {
+                    'teams': teams,
+                    'email': email
+                })
+        else:
+            messages.error(request, 'Invalid verification code.')
+        
+    return render(request, 'users/verify_email.html', {
+        'verification_sent': True,
+        'email': request.POST.get('email')
+    })
+
+
+def select_team(request):
+    if request.method == 'POST':
+        team_id = request.POST.get('team_id')
+        email = request.POST.get('email')
+        
+        try:
+            team = Team.objects.get(id=team_id)
+            # Verify the email is associated with this team
+            is_member = TeamMember.objects.filter(team=team, email=email).exists()
+            is_leader = team.team_leader_email == email
+            
+            if is_member or is_leader:
+                auth_login(request, team)
+                messages.success(request, f'Welcome back, {team.team_name}!')
+                return redirect('profile')
+            else:
+                messages.error(request, 'Invalid team selection.')
+        except Team.DoesNotExist:
+            messages.error(request, 'Team not found.')
+    
+    return redirect('login')
 

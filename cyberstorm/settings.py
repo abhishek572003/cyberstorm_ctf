@@ -238,6 +238,16 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
 ]
 
-# Add these settings
-GOOGLE_OAUTH2_CLIENT_ID = '688526436073-r1e1ncvig77nhh0loc2qi7ijuerhdl08.apps.googleusercontent.com'
-GOOGLE_OAUTH2_CLIENT_SECRET = 'your-client-secret'  # Add your client secret here
+AUTH0_DOMAIN = "cyberstorm.us.auth0.com"
+AUTH0_CLIENT_ID = "WBx2mHLlHaF7SVU3Nu4cD5STPB1I2g2q"
+AUTH0_CLIENT_SECRET = "s0kklHUTBf0cTX9r0zmZI5GYuVr08l9iOJYpwt0s2HCaPNiTY-ei1S0pVL83LyKB"
+
+# Add these email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'kailashps.1011@gmail.com'  # Replace with your actual Gmail
+EMAIL_HOST_PASSWORD = 'fvwa jznq cfaq hsbk'  # Replace with your app password
+
+#bfmp tnhh rrim cebx
