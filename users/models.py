@@ -22,8 +22,7 @@ class TeamManager(BaseUserManager):
         return team
 
 class Team(AbstractBaseUser, PermissionsMixin):
-    id = models.BigAutoField(primary_key=True)  # This is actually optional as Django adds it automatically
-    team_name = models.CharField(max_length=100, unique=True)
+    team_name = models.CharField(max_length=100, primary_key=True, unique=True)  # Make team_name the primary key
     team_leader = models.CharField(max_length=100)
     team_leader_email = models.EmailField(unique=True)
     member_names = models.TextField(blank=True)  # Store names as CSV
