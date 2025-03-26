@@ -870,8 +870,16 @@ text-decoration: none;
     height: 200px;
     object-fit: contain;
     margin: 20px auto;
-    filter: brightness(0) invert(1); /* Make dark logos white */
-    transition: all 0.3s ease;
+    filter: brightness(0) invert(1); /* Default filter for dark logos */
+}
+
+/* Remove all filters for RedFox logo */
+.redfox-card img {
+    filter: none !important; /* Use !important to ensure no other filters are applied */
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    margin: 20px auto;
 }
 
 .card h3 {
@@ -1144,6 +1152,14 @@ text-decoration: none;
     transition: all 0.3s ease;
 }
 
+.no-filter {
+    filter: none !important; /* Removes any applied filters */
+    background-color: transparent !important; /* Ensures no background */
+    opacity: 1 !important; /* Removes any opacity applied */
+    mix-blend-mode: normal; /* Resets any blending modes */
+}
+
+
 .card-back a:hover {
     background: rgba(255, 215, 0, 0.2);
     transform: translateY(-2px);
@@ -1232,27 +1248,28 @@ text-decoration: none;
         <!-- Title Sponsor -->
         <h2 class="section-header">Powered By</h2>
         <div class="title-sponsor">
-            <div class="card">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="info-btn" title="Click to learn more">
-                            <i class="fas fa-info"></i>
-                        </div>
-                        <img src="{% static 'images/redfox.png' %}" alt="RedFox Security">
-                        <h3>RedFox Security</h3>
-                    </div>
-                    <div class="card-back">
-                        <p>RedFox Security is a global penetration testing firm dedicated to securing businesses from cyber threats. With over a decade of experience, we specialize in advanced security assessments, helping enterprises identify and fix vulnerabilities. Our expert team delivers practical, results-driven cybersecurity solutions across multiple countries.
-We also offer specialized cybersecurity courses through RedFox Academy, providing hands-on training in penetration testing and offensive security skills. In addition to our courses, we provide free cybersecurity content on YouTube, making learning accessible to everyone.
-Our expertise has been recognized globally in top cybersecurity events such as Black Hat Asia and Black Hat Vegas as well as in BSides Goa, Pune and Mumbai.
-Redfox Security is proud to foster the growth of future ethical hacking and security professionals, empowering them with the skills and knowledge to excel in the ever-evolving cybersecurity landscape.</p>
-                        <a href="https://linktr.ee/redfoxsec" target="_blank">
-                            <i class="fas fa-external-link-alt"></i> Learn More
-                        </a>
-                    </div>
+    <div class="card redfox-card">
+        <div class="card-inner">
+            <div class="card-front">
+                <div class="info-btn" title="Click to learn more">
+                    <i class="fas fa-info"></i>
                 </div>
+                <img src="{% static 'images/redfox.png' %}" alt="RedFox Security" class="no-filter">
+                <h3>RedFox Security</h3>
+            </div>
+            <div class="card-back">
+                <p>RedFox Security is a global penetration testing firm dedicated to securing businesses from cyber threats. With over a decade of experience, we specialize in advanced security assessments, helping enterprises identify and fix vulnerabilities. Our expert team delivers practical, results-driven cybersecurity solutions across multiple countries.
+                We also offer specialized cybersecurity courses through RedFox Academy, providing hands-on training in penetration testing and offensive security skills. In addition to our courses, we provide free cybersecurity content on YouTube, making learning accessible to everyone.
+                Our expertise has been recognized globally in top cybersecurity events such as Black Hat Asia and Black Hat Vegas as well as in BSides Goa, Pune and Mumbai.
+                Redfox Security is proud to foster the growth of future ethical hacking and security professionals, empowering them with the skills and knowledge to excel in the ever-evolving cybersecurity landscape.</p>
+                <a href="https://linktr.ee/redfoxsec" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Learn More
+                </a>
             </div>
         </div>
+    </div>
+</div>
+
 
         <!-- Support Row -->
         <div class="support-row">
