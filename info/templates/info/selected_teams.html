@@ -1,0 +1,374 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - Cyberstorm CTF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<div class="teams-container">
+    <h1 class="teams-title">Selected Teams</h1>
+    
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search teams or members...">
+        <i class="fas fa-search search-icon"></i>
+    </div>
+
+    <div class="selection-notice">
+        <div class="notice-content">
+            <span class="pirate-icon">🏴‍☠️</span>
+            <p>Top 42 teams have been selected for the next adventure!</p>
+            <span class="pirate-icon">⚔️</span>
+        </div>
+    </div>
+
+    {% if error %}
+        <div class="error-message">{{ error }}</div>
+    {% endif %}
+    
+    <div class="teams-grid">
+        {% for team in teams %}
+        <div class="team-card {% if team.rank <= 3 %}top-team rank-{{ team.rank }}{% endif %}" data-team-name="{{ team.team_name|lower }}">
+            <div class="team-rank">#{{ team.rank }}</div>
+            <h2 class="team-name">{{ team.team_name }}</h2>
+            <div class="team-score">Score: {{ team.team_score }}</div>
+            <div class="team-details">
+                <h3>Team Members:</h3>
+                <div class="members-list">
+                    {% for member in team.members %}
+                    <div class="member">
+                        <span class="member-name">{{ member.name }}</span>
+                        <span class="member-score">{{ member.score }} pts</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% if team.rank <= 3 %}
+            <div class="medal-badge rank-{{ team.rank }}">
+                {% if team.rank == 1 %}🥇
+                {% elif team.rank == 2 %}🥈
+                {% else %}🥉
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Pirata One', cursive;
+    background: linear-gradient(135deg, #244a95, #1E1E1E);
+}
+
+.teams-container {
+    padding: 40px 20px;
+    min-height: 100vh;
+}
+
+.search-container {
+    max-width: 600px;
+    margin: 0 auto 40px;
+    position: relative;
+    animation: slideDown 0.5s ease-out;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 15px 45px 15px 20px;
+    border: 2px solid #FFD700;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+.search-container input:focus {
+    outline: none;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.search-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #FFD700;
+}
+
+.teams-title {
+    text-align: center;
+    color: #FFD700;
+    font-size: 48px;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    to {
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.5),
+                     0 0 30px rgba(255, 215, 0, 0.3);
+    }
+}
+
+.error-message {
+    color: #ff6b6b;
+    text-align: center;
+    margin: 20px;
+    padding: 15px;
+    background: rgba(255, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.teams-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.team-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    position: relative;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.top-team {
+    border: 2px solid;
+}
+
+.rank-1 {
+    border-color: gold;
+}
+
+.rank-2 {
+    border-color: silver;
+}
+
+.rank-3 {
+    border-color: #cd7f32;
+}
+
+.team-rank {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    background: #FFD700;
+    color: #1E1E1E;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+    border: 2px solid #1E1E1E;
+}
+
+.team-name {
+    color: #FFD700;
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.team-score {
+    color: #FFD700;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.team-details {
+    color: white;
+}
+
+.team-details h3 {
+    color: #FFD700;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.members-list {
+    margin-top: 10px;
+}
+
+.member {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.member-name {
+    color: white;
+    font-size: 16px;
+}
+
+.member-score {
+    color: #FFD700;
+    font-size: 14px;
+}
+
+.medal-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 30px;
+}
+
+@media (max-width: 768px) {
+    .teams-grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+    
+    .teams-title {
+        font-size: 36px;
+    }
+    
+    .team-card {
+        margin: 10px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Add animation delay for cards */
+.team-card:nth-child(1) { animation-delay: 0.1s; }
+.team-card:nth-child(2) { animation-delay: 0.2s; }
+.team-card:nth-child(3) { animation-delay: 0.3s; }
+
+.selection-notice {
+    background: linear-gradient(45deg, rgba(255,215,0,0.1), rgba(255,165,0,0.1));
+    padding: 15px;
+    border-radius: 10px;
+    margin: 0 auto 30px;
+    max-width: 800px;
+    text-align: center;
+    border: 2px solid rgba(255,215,0,0.3);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.notice-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    color: #FFD700;
+    font-size: 20px;
+}
+
+.pirate-icon {
+    font-size: 24px;
+    animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.team-card:nth-child(-n+42)::after {
+    content: "SELECTED";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    padding: 5px 15px;
+    border-radius: 15px;
+    color: #1E1E1E;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.team-card:nth-child(-n+42) {
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1), 
+        rgba(255, 215, 0, 0.05)
+    );
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const teamCards = document.querySelectorAll('.team-card');
+
+    searchInput.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+
+        teamCards.forEach(card => {
+            const teamName = card.querySelector('.team-name').textContent.toLowerCase();
+            const memberNames = Array.from(card.querySelectorAll('.member-name'))
+                                   .map(el => el.textContent.toLowerCase());
+            
+            const matchesSearch = teamName.includes(searchTerm) || 
+                                memberNames.some(name => name.includes(searchTerm));
+            
+            if (matchesSearch) {
+                card.style.display = '';
+                card.style.animation = 'fadeIn 0.5s ease-out';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+
+</body>
+</html> 

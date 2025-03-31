@@ -433,9 +433,134 @@ footer {
                              0 0 25px rgba(255, 215, 0, 0.5);
             }
         }
+
+        .notification-banner {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            padding: 12px;
+            text-align: center;
+            animation: slideDown 0.5s ease-out;
+            position: relative;
+            z-index: 100;
+        }
+
+        .notification-link {
+            color: #1E1E1E;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+            display: block;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        .notification-link:hover {
+            color: #000;
+            transform: scale(1.02);
+            transition: all 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .welcome-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .dialog-content {
+            background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid #FFD700;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .dialog-content h2 {
+            color: #FFD700;
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .dialog-text {
+            color: white;
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .view-leaderboard-btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #1E1E1E;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 20px;
+            font-weight: bold;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .view-leaderboard-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,215,0,0.3);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #FFD700;
+            position: absolute;
+            z-index: 1001;
+            animation: confetti-fall linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
     </style>
 </head>
 <body>
+    <div id="welcomeDialog" class="welcome-dialog">
+        <div class="dialog-content">
+            <h2>🏆 Round 1 Results Announced! ��</h2>
+            <p class="dialog-text">The leaderboard is now live!</p>
+            <a href="{% url 'selected_teams' %}" class="view-leaderboard-btn" onclick="closeDialog()">
+                View Leaderboard ⚔️
+            </a>
+        </div>
+    </div>
     {% block content %}
     <div class="preloader">
         <div class="loader"></div>
@@ -486,6 +611,12 @@ footer {
             
         </div>
     </section>
+
+    <div class="notification-banner">
+        <a href="{% url 'selected_teams' %}" class="notification-link">
+            🏆 Selected Teams Announced! Click here to view the results 🎉
+        </a>
+    </div>
 
     <section class="domains">
         <h1>Domains</h1>
@@ -611,6 +742,53 @@ window.addEventListener("load", function () {
 
         setInterval(updateCountdown, 1000);
         updateCountdown(); // Initial call to avoid 1s delay
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if user has seen the dialog
+        if (!localStorage.getItem('welcomeDialogShown')) {
+            showWelcomeDialog();
+            createConfetti();
+            localStorage.setItem('welcomeDialogShown', 'true');
+        }
+    });
+
+    function showWelcomeDialog() {
+        document.getElementById('welcomeDialog').style.display = 'flex';
+    }
+
+    function closeDialog() {
+        const dialog = document.getElementById('welcomeDialog');
+        dialog.style.animation = 'fadeOut 0.5s ease-out';
+        setTimeout(() => {
+            dialog.style.display = 'none';
+        }, 500);
+    }
+
+    function createConfetti() {
+        const colors = ['#FFD700', '#FFA500', '#FF6B6B', '#4CAF50', '#2196F3'];
+        const confettiCount = 100;
+
+        for (let i = 0; i < confettiCount; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            
+            // Random properties for more natural movement
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.width = Math.random() * 10 + 5 + 'px';
+            confetti.style.height = confetti.style.width;
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDuration = Math.random() * 2 + 2 + 's';
+            confetti.style.opacity = Math.random() + 0.5;
+            
+            document.body.appendChild(confetti);
+            
+            // Remove confetti after animation
+            confetti.addEventListener('animationend', () => {
+                confetti.remove();
+            });
+        }
+    }
     </script>
 </body>
 </html>

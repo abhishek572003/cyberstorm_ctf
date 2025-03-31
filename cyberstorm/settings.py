@@ -250,4 +250,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'kailashps.1011@gmail.com'  # Replace with your actual Gmail
 EMAIL_HOST_PASSWORD = 'fvwa jznq cfaq hsbk'  # Replace with your app password
 
+TEAMS_EXCEL_URL = "https://docs.google.com/spreadsheets/d/11aad-7TLmcByz7dSWZPrI4WH6i21tU5djSzjrlY6Kbc/edit?usp=sharing"
+
 #bfmp tnhh rrim cebx
